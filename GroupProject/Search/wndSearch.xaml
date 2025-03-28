@@ -6,7 +6,22 @@
         xmlns:local="clr-namespace:GroupProject.Search"
         mc:Ignorable="d"
         Title="wndSearch" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <Canvas>
+        <Label Content="Invoice Number:" FontSize="16" Canvas.Left="40" Canvas.Top="15" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cboInvoiceNumber" FontSize="16" Canvas.Left="40" Canvas.Top="46" HorizontalAlignment="Left" VerticalAlignment="Center" Width="158" SelectionChanged="cboInvoiceNumber_SelectionChanged" />
+        <Label Content="Invoice Date:" FontSize="16" Canvas.Left="251" Canvas.Top="15" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cboInvoiceDate" FontSize="16" Canvas.Left="251" Canvas.Top="46" HorizontalAlignment="Left" VerticalAlignment="Center" Width="158" SelectionChanged="cboInvoiceDate_SelectionChanged" />
+        <Label Content="Invoice Cost:" FontSize="16" Canvas.Left="461" Canvas.Top="15" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cboInvoiceCost" FontSize="16" Canvas.Left="461" Canvas.Top="46" HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" SelectionChanged="cboInvoiceCost_SelectionChanged" />
+
+        <Grid Canvas.Left="10" Canvas.Top="111" HorizontalAlignment="Left" Height="212" VerticalAlignment="Center" Width="780">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="dgdInvoice" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Column="0"/>
+            <Button x:Name="btnSelectInvoice" Grid.Column="1" Content="Select Invoice" FontSize="16" HorizontalAlignment="Center" Margin="0,26,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="btnClearFilter" Grid.Column="1" Content="Clear Filter" FontSize="16" HorizontalAlignment="Center" Margin="0,81,0,0" VerticalAlignment="Top"/>
+        </Grid>
+    </Canvas>
 </Window>
