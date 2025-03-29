@@ -158,7 +158,7 @@ namespace GroupProject.Search
         /// <param name="sInvoiceDate"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static string GetDistinctNum(string sInvoiceDate)
+        public static string GetDistinctNum()
         {
             try
             {
@@ -178,7 +178,7 @@ namespace GroupProject.Search
         /// <param name="sInvoiceDate"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static string GetDistinctDate(string sInvoiceDate)
+        public static string GetDistinctDate()
         {
             try
             {
@@ -198,7 +198,7 @@ namespace GroupProject.Search
         /// <param name="dInvoiceCost"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static string GetDistinctCost(Decimal dInvoiceCost)
+        public static string GetDistinctCost()
         {
             try
             {

@@ -10,6 +10,6 @@ namespace GroupProject.Common
     {
         public string InvoiceID { get; set; }
         public string InvoiceDate { get; set; }
-        public Decimal InvoiceCost { get; set; }
+        public string InvoiceCost { get; set; }
     }
 }

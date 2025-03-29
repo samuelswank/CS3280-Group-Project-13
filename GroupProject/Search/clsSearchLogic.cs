@@ -7,6 +7,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static GroupProject.Search.clsSearchLogic;
+using System.Windows;
+using GroupProject.Common;
 
 namespace GroupProject.Search
 {
@@ -21,6 +24,9 @@ namespace GroupProject.Search
         //      GetInvoiceDateSQL
         //      GetInvoiceCostSQL
 
+        /// <summary>
+        /// Handles accessing the database
+        /// </summary>
         public class clsDBAccess
         {
             /// <summary>
@@ -63,16 +69,12 @@ namespace GroupProject.Search
                             //Add the information for the SelectCommand using the SQL statement and the connection object
                             adapter.SelectCommand = new OleDbCommand(sSQL, conn);
                             adapter.SelectCommand.CommandTimeout = 0;
-
+                            
                             //Fill up the DataSet with data
                             // I had to change this in order to access the specific tables
-                            adapter.Fill(ds, "Invoices");
-                            //adapter.Fill(ds, "Flight_Passenger_Link");
-                            //adapter.Fill(ds, "Passenger");
+                            adapter.Fill(ds, "Invoice");
                         }
                     }
-
-                    //
 
                     //Set the number of values returned
                     iRetVal = ds.Tables[0].Rows.Count;
@@ -86,5 +88,48 @@ namespace GroupProject.Search
                 }
             }
         }
+
+        /// <summary>
+        /// Gets a list of all invoices, As of right now, mainly used for texting SQL statements
+        /// </summary>
+        /// <returns></returns>
+        public List<clsInvoice> GetInvoice()
+        {
+            clsDBAccess db;
+            // create new database object
+            db = new clsDBAccess();
+            // sSQL string holds the sql statement from GetFlight
+            string sSQL = clsSearchSQL.GetInvoices();
+
+            //create list of Flights
+            List<clsInvoice> InvoiceList = new List<clsInvoice>();
+
+            //Create a DataSet to hold the data
+            DataSet ds;
+
+            //Number of return values
+            int iRet = 0;
+
+            //Get all the values from the Flights table
+            ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+
+            //Loop through all the values returned
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                // create new ClsFlight class
+                clsInvoice invoice = new clsInvoice();
+
+                // fill class with data
+                invoice.InvoiceID = ds.Tables[0].Rows[i][0].ToString();
+                invoice.InvoiceDate = ds.Tables[0].Rows[i].ItemArray[1].ToString();
+                invoice.InvoiceCost = ds.Tables[0].Rows[i].ItemArray[2].ToString();
+
+                // add flight object to flights list
+                InvoiceList.Add(invoice);
+            }
+
+            return InvoiceList;
+        }
+
     }
 }

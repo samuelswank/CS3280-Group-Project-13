@@ -350,3 +350,4 @@ Temporary Items
 !src/Microsoft.DotNet.Wpf/src/WpfGfx/codegen/mcg/main/*.rsp
 !src/Microsoft.DotNet.Wpf/src/WpfGfx/tools/csp/**/*.rsp
 GroupProject/GroupProject.csproj
+GroupProject/GroupProject.csproj
