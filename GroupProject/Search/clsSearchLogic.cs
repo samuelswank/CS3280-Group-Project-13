@@ -72,7 +72,7 @@ namespace GroupProject.Search
                             
                             //Fill up the DataSet with data
                             // I had to change this in order to access the specific tables
-                            adapter.Fill(ds, "Invoice");
+                            adapter.Fill(ds, "Invoices");
                         }
                     }
 
@@ -98,10 +98,10 @@ namespace GroupProject.Search
             clsDBAccess db;
             // create new database object
             db = new clsDBAccess();
-            // sSQL string holds the sql statement from GetFlight
+            // sSQL string holds the sql statement from getInvoices
             string sSQL = clsSearchSQL.GetInvoices();
 
-            //create list of Flights
+            //create list of Invoices
             List<clsInvoice> InvoiceList = new List<clsInvoice>();
 
             //Create a DataSet to hold the data
@@ -110,13 +110,13 @@ namespace GroupProject.Search
             //Number of return values
             int iRet = 0;
 
-            //Get all the values from the Flights table
+            //Get all the values from the Invoices table
             ds = db.ExecuteSQLStatement(sSQL, ref iRet);
 
             //Loop through all the values returned
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                // create new ClsFlight class
+                // create new clsInvoice class
                 clsInvoice invoice = new clsInvoice();
 
                 // fill class with data
@@ -124,7 +124,7 @@ namespace GroupProject.Search
                 invoice.InvoiceDate = ds.Tables[0].Rows[i].ItemArray[1].ToString();
                 invoice.InvoiceCost = ds.Tables[0].Rows[i].ItemArray[2].ToString();
 
-                // add flight object to flights list
+                // add invoice object to Invoicelist
                 InvoiceList.Add(invoice);
             }
 

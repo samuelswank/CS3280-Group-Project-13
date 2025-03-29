@@ -34,7 +34,7 @@
             </Grid.ColumnDefinitions>
             <DataGrid x:Name="dgdInvoice" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Column="0"/>
 
-            <Button x:Name="btnSelectInvoice" Grid.Column="1" Content="Select Invoice" FontSize="16" HorizontalAlignment="Center" Margin="0,26,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="btnSelectInvoice" Grid.Column="1" Content="Select Invoice" FontSize="16" HorizontalAlignment="Center" Margin="0,26,0,0" VerticalAlignment="Top" Click="btnSelectInvoice_Click"/>
             <Button x:Name="btnClearFilter" Grid.Column="1" Content="Clear Filter" FontSize="16" HorizontalAlignment="Center" Margin="0,81,0,0" VerticalAlignment="Top"/>
         </Grid>
     </Canvas>

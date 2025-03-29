@@ -40,6 +40,9 @@ namespace GroupProject.Search
         // Variables:
         // sSelectedInvoiceID - hold the ID of the currently selected invoice
         // SelectedInvoice - publicly accessable property
+        // bool bInvoiceNumIsSelected = false;
+        // bool bInvoiceDateIsSelected = false;
+        // bool bInvoiceCostIsSelected = false;
 
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void cboInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            // bool bInvoiceNumIsSelected = true;
         }
 
         /// <summary>
@@ -59,7 +62,7 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void cboInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            // bool bInvoiceDateIsSelected = true;
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void cboInvoiceCost_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            // bool bInvoiceCostIsSelected = true;
         }
 
         /// <summary>
@@ -79,7 +82,8 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void btnSelectInvoice_Click(object sender, RoutedEventArgs e)
         {
-            
+            //close window, return to main window
+            this.Hide();
         }
 
         /// <summary>
@@ -100,7 +104,7 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
-            // filters the dgdInvoice (invoice datagrid) by whats chosen in the 3 comboboxes
+            // check the bools, depending on what combination is true, call that sql statement
         }
     }
 }
