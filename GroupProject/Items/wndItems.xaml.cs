@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using GroupProject.Common;
+using GroupProject.Items;
 
 namespace GroupProject.Items
 {
@@ -19,9 +21,23 @@ namespace GroupProject.Items
     /// </summary>
     public partial class wndItems : Window
     {
+        // bool itemEdited -> passed to wndMain on submit
+        // bool itemEdited = false;
+
         public wndItems()
         {
             InitializeComponent();
+
+            clsItemsLogic itemsLogic = new clsItemsLogic();
+            List<clsItem> items = new List<clsItem>();
+            items = itemsLogic.GetItems();
+
+            dgItems.ItemsSource = items;
+        }
+
+        private void BtnCancelItems_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
