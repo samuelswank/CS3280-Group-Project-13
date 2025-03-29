@@ -39,5 +39,10 @@ namespace GroupProject.Items
         {
             this.Close();
         }
+
+        private void BtnSubmitItems_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
