@@ -77,81 +77,81 @@ namespace GroupProject.Items
                         MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
                 }
             }
-
-            public List<clsItem> GetItems()
-            {
-                clsDBAccess db;
-                db = new clsDBAccess();
-
-                string sSQL = clsItemsSQL.GetItems();
-
-                List<clsItem> ItemsList = new List<clsItem>();
-
-                DataSet ds;
-
-                int iRet = 0;
-
-                try
-                {
-                    ds = db.ExecuteSQLStatement("ItemsDesc", sSQL, ref iRet);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message, ex.InnerException);
-                }
-
-                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                {
-                    // create new ClsFlight class
-                    clsItem item = new clsItem();
-
-                    // fill class with data
-                    item.ItemCode = ds.Tables[0].Rows[i][0].ToString();
-                    item.ItemDesc = ds.Tables[0].Rows[i].ItemArray[1].ToString();
-                    item.Cost = ds.Tables[0].Rows[i].ItemArray[2].ToString();
-
-                    // add flight object to flights list
-                    ItemsList.Add(item);
-                }
-
-                return ItemsList;
-            }
-
-            public List<string> GetLineItemInvoiceNums(string sItemCode)
-            {
-                clsDBAccess db;
-                db = new clsDBAccess();
-
-                string sSQL = clsItemsSQL.GetLineItemInvoiceNums(sItemCode);
-
-                List<string> ItemInvoiceNumsList = new List<string>();
-
-                DataSet ds;
-
-                int iRet = 0;
-
-                try
-                {
-                    ds = db.ExecuteSQLStatement("ItemsDesc", sSQL, ref iRet);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message, ex.InnerException);
-                }
-
-                for (int i = 0; i < ds.Tables[0].Rows.Count; ++i)
-                {
-                    ItemInvoiceNumsList.Add(ds.Tables[0].Rows[i][0].ToString());
-                }
-
-                return ItemInvoiceNumsList;
-            }
-
-            // TODO: Implement UpdateItemDesc, InsertItem, and DeleteItem
-            //  NOTE: This requires another method to be added to the
-            //        clsDBAccess class that will address UPDATE, INSERT, and
-            //        DELETE operations...likely returning a bool indicating
-            //        whether the operation was successfull or not
         }
+
+        public List<clsItem> GetItems()
+        {
+            clsDBAccess db;
+            db = new clsDBAccess();
+
+            string sSQL = clsItemsSQL.GetItems();
+
+            List<clsItem> ItemsList = new List<clsItem>();
+
+            DataSet ds;
+
+            int iRet = 0;
+
+            try
+            {
+                ds = db.ExecuteSQLStatement("ItemsDesc", sSQL, ref iRet);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                // create new ClsFlight class
+                clsItem item = new clsItem();
+
+                // fill class with data
+                item.ItemCode = ds.Tables[0].Rows[i][0].ToString();
+                item.ItemDesc = ds.Tables[0].Rows[i].ItemArray[1].ToString();
+                item.Cost = ds.Tables[0].Rows[i].ItemArray[2].ToString();
+
+                // add flight object to flights list
+                ItemsList.Add(item);
+            }
+
+            return ItemsList;
+        }
+
+        public List<string> GetLineItemInvoiceNums(string sItemCode)
+        {
+            clsDBAccess db;
+            db = new clsDBAccess();
+
+            string sSQL = clsItemsSQL.GetLineItemInvoiceNums(sItemCode);
+
+            List<string> ItemInvoiceNumsList = new List<string>();
+
+            DataSet ds;
+
+            int iRet = 0;
+
+            try
+            {
+                ds = db.ExecuteSQLStatement("ItemsDesc", sSQL, ref iRet);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; ++i)
+            {
+                ItemInvoiceNumsList.Add(ds.Tables[0].Rows[i][0].ToString());
+            }
+
+            return ItemInvoiceNumsList;
+        }
+
+        // TODO: Implement UpdateItemDesc, InsertItem, and DeleteItem
+        //  NOTE: This requires another method to be added to the
+        //        clsDBAccess class that will address UPDATE, INSERT, and
+        //        DELETE operations...likely returning a bool indicating
+        //        whether the operation was successfull or not
     }
 }
