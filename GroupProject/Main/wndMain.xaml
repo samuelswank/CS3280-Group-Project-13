@@ -7,6 +7,31 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Name="btnSearch" Content="Search for Invoice" Margin="150" Click="BtnSearch_Click" />
+        <Menu VerticalAlignment="Top">
+            <MenuItem x:Name="fileControl" Header="File" Width="60">
+                <MenuItem x:Name="exitBtn" Header="Exit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="actionsControl" Header="Actions" Width="60" Height="30">
+                <MenuItem x:Name="editItemsBtn" Header="Edit Items" Click="EditItems_Click"/>
+                <MenuItem x:Name="searchBtn" Header="Search Invoice" Click="SearchInvoice_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <Label x:Name="invoicelbl" Content="Invoice " 
+       HorizontalAlignment="Center" VerticalAlignment="Top"
+       FontSize="20" FontWeight="Bold" Margin="0,30,0,0"/>
+        <Label x:Name="invoiceDatelbl" Content="Invoice Date :" HorizontalAlignment="Left" Margin="234,102,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Label x:Name="invoiceNumlbl" Content="Invoice Number :" HorizontalAlignment="Left" Margin="429,102,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Label x:Name="totalCostlbl" Content="Total Cost : 0" HorizontalAlignment="Left" Margin="331,381,0,0" VerticalAlignment="Top" Height="27" Width="120" AutomationProperties.IsRequiredForForm="True" FontSize="16" FontWeight="Bold"/>
+        <DataGrid x:Name="invoiceDataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="157,146,157,146"/>
+        <Label x:Name="itemslbl" Content="Items :" HorizontalAlignment="Left" Margin="225,308,0,0" VerticalAlignment="Top" Width="63" FontSize="14"/>
+        <ComboBox x:Name="cboItems" HorizontalAlignment="Left" Margin="293,312,0,0" VerticalAlignment="Top" Width="167"/>
+        <Button x:Name="addBtn" Content="Add Item" HorizontalAlignment="Left" Margin="492,303,0,0" VerticalAlignment="Top" Width="70"/>
+        <Button x:Name="removeBtn" Content="Remove Item" HorizontalAlignment="Left" Margin="488,328,0,0" VerticalAlignment="Top" Width="78"/>
+        <Label x:Name="itemcostlbl" Content="Cost :" HorizontalAlignment="Left" Margin="234,353,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Button x:Name="editInvoicebtn" Content="Edit Invoice" HorizontalAlignment="Left" Margin="347,72,0,0" VerticalAlignment="Top" Width="88"/>
+        <Button x:Name="saveInvoicebtn" Content="Save Invoice" HorizontalAlignment="Left" Margin="555,72,0,0" VerticalAlignment="Top" Width="88"/>
+        <Button x:Name="createInvoicebtn" Content="Create Invoice" HorizontalAlignment="Left" Margin="157,72,0,0" VerticalAlignment="Top" Width="88"/>
+
     </Grid>
 </Window>
