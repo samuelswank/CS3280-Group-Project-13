@@ -1,4 +1,5 @@
-﻿using GroupProject.Search;
+﻿using GroupProject.Items;
+using GroupProject.Search;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -57,6 +58,10 @@ namespace GroupProject.Main
         private void EditItems_Click(object sender, RoutedEventArgs e)
         {
             //Once edit items window is hidden, if the value of HasItemBeenChanged is true, then update the items combo box
+            this.Hide();
+            wndItems wndItem = new wndItems();
+            wndItem.ShowDialog();
+            this.Show();
         }
     
 }
