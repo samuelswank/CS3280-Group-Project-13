@@ -9,7 +9,7 @@ namespace GroupProject.Common
     /// <summary>
     /// Represents an item for sale with its cost
     /// </summary>
-    internal class clsItem
+    public class clsItem
     {
         /// <summary>
         /// Single latin letter acting as the unique primary for the desired item
@@ -23,5 +23,8 @@ namespace GroupProject.Common
         /// Cost in USD dollars and cents of the item formatted as ${dollars}.{cents}
         /// </summary>
         public string Cost { get; set; }
+
+        
     }
-}
+    
+    } 

@@ -67,9 +67,9 @@ namespace GroupProject.Main
         /// Gets all available items from ItemDesc table.
         /// </summary>
         /// <returns></returns>
-        public DataSet GetAllItem()
+        public DataSet GetAllItem(ref int iRetVal)
         {
-            int iRetVal = 0;
+            //int iRetVal = 0;
             string sSQL = $"SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
             return ExecuteSQLStatement(sSQL, ref iRetVal);
         }

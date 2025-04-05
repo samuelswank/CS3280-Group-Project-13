@@ -1,4 +1,5 @@
-﻿using GroupProject.Items;
+﻿using GroupProject.Common;
+using GroupProject.Items;
 using GroupProject.Search;
 using System.Text;
 using System.Windows;
@@ -18,6 +19,8 @@ namespace GroupProject.Main
     /// </summary>
     public partial class wndMain : Window
     {
+        private List<clsItem> Items;
+        private clsMainLogic getItems;
         /// <summary>
         /// The constructor is initialized and also will completely shutdown if user clicks X on top right
         /// </summary>
@@ -25,6 +28,9 @@ namespace GroupProject.Main
         {
             InitializeComponent();
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            Items = new List<clsItem>();
+            getItems = new clsMainLogic();
+            LoadItems();
         }
 
         /// <summary>
@@ -62,6 +68,23 @@ namespace GroupProject.Main
             wndItems wndItem = new wndItems();
             wndItem.ShowDialog();
             this.Show();
+        }
+
+        private void LoadItems()
+        {
+            try
+            {
+                Items = getItems.AllItems();
+                cboItems.ItemsSource = null;
+                cboItems.ItemsSource = Items;
+                cboItems.DisplayMemberPath = "ItemDesc";
+                cboItems.SelectedValuePath = "ItemCode";
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     
 }
