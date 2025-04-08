@@ -41,6 +41,12 @@ namespace GroupProject.Main
             return AllItems;
         }
 
+        //public List<clsInvoice> AllInvoices()
+        //{
+        //    int invoices = 0;
+        //    DataSet ds = db.
+        //}
+
         
     }
 }

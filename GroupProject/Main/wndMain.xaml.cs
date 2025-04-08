@@ -21,6 +21,7 @@ namespace GroupProject.Main
     {
         private List<clsItem> Items;
         private clsMainLogic getItems;
+        
         /// <summary>
         /// The constructor is initialized and also will completely shutdown if user clicks X on top right
         /// </summary>
@@ -53,6 +54,7 @@ namespace GroupProject.Main
             wndSearch wndSearch = new wndSearch();
             wndSearch.ShowDialog();
             this.Show();
+            
             //The main window will grab the invoice number from the search window property, and then load it into the datagrid and have it disabled for any edits.
 
         }
@@ -86,6 +88,11 @@ namespace GroupProject.Main
                 throw;
             }
         }
-    
-}
+
+        private void cboItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = (clsItem)cboItems.SelectedItem;
+            itemCost.Content = selectedItem.Cost;
+        }
+    }
 }
