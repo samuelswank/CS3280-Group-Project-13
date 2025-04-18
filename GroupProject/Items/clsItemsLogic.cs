@@ -130,5 +130,22 @@ namespace GroupProject.Items
 
             return iNumRows;
         }
+
+        public int GetItemCodeCount(string sItemCode)
+        {
+            string sSQL = clsItemsSQL.GetItemCodeCount(sItemCode);
+            string sNumRows;
+            try
+            {
+                sNumRows = db.ExecuteScalarSQL(sSQL);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e.InnerException);
+            }
+
+            return int.Parse(sNumRows);
+        }
     }
 }

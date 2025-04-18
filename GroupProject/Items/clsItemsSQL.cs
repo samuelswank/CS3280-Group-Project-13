@@ -20,8 +20,7 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+                throw new Exception(ex.Message, ex.InnerException);
             }
         }
 
@@ -34,8 +33,7 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + '.' +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+                throw new Exception(ex.Message, ex.InnerException);
             }
         }
 
@@ -50,8 +48,7 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + '.' +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+                throw new Exception(ex.Message, ex.InnerException);
             }
         }
 
@@ -59,15 +56,14 @@ namespace GroupProject.Items
         {
             try
             {
-                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Code) Values(" + sItemCode + ", " + sItemDesc +
-                    ", " + sCost + ");";
+                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Code) Values(" + sItemCode + ", "
+                    + sItemDesc + ", " + sCost + ");";
 
                 return sSQL;
             }
             catch (Exception ex)
             {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + '.' +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+                throw new Exception(ex.Message, ex.InnerException);
             }
         }
 
@@ -80,8 +76,20 @@ namespace GroupProject.Items
             }
             catch (Exception ex)
             {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + '.' +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
+
+        public static string GetItemCodeCount(string sItemCode)
+        {
+            try
+            {
+                string sSQL = "SELECT COUNT(*) FROM ItemDesc WHERE ItemCode = '" + sItemCode + "';";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
             }
         }
     }
