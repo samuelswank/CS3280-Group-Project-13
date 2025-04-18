@@ -23,36 +23,74 @@ namespace GroupProject.Items
     /// </summary>
     public partial class wndItems : Window
     {
+        clsItemsLogic itemsLogic;
+        List<clsItem> items;
+
         ExceptionHandler handler = new ExceptionHandler("Error.txt");
 
         public wndItems()
         {
             InitializeComponent();
 
-            clsItemsLogic itemsLogic = new clsItemsLogic();
-            List<clsItem> items = new List<clsItem>();
-            items = itemsLogic.GetItems();
 
-            dgItems.ItemsSource = items;
-        }
-
-        private void DgItems_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
             try
             {
-                if (e.PropertyType == typeof(decimal))
-                {
-                    DataGridTextColumn dgTextColumn = e.Column as DataGridTextColumn;
-                    if (dgTextColumn != null) dgTextColumn.Binding.StringFormat = "{0:C}";
-                    
-                }
+                itemsLogic = new clsItemsLogic();
+                items = new List<clsItem> ();
+
+                items = itemsLogic.GetItems();
+                dgItems.ItemsSource = items;
             }
             catch (Exception ex)
             {
                 handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name, MethodInfo.GetCurrentMethod().Name,
                     " -> " + ex.Message);
             }
+        }
 
+        private void DgItems_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            try
+            {
+                string sHeaderName = e.Column.Header.ToString();
+
+                if (sHeaderName == "ItemCode")
+                {
+                    e.Column.Header = "Item Code";
+                    e.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                }
+                else if (sHeaderName == "ItemDesc")
+                {
+                    e.Column.Width = new DataGridLength(2, DataGridLengthUnitType.Star);
+                    e.Column.Header = "Item Description";
+                }
+                else e.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+
+                DataGridTextColumn dgTextColumn = e.Column as DataGridTextColumn;
+                dgTextColumn.HeaderStyle = (Style) FindResource("styleDgColHead");
+
+                if (e.PropertyType == typeof(decimal))
+                {
+                    if (dgTextColumn != null)
+                    {
+                        dgTextColumn.Binding.StringFormat = "{0:C}";
+                        dgTextColumn.CellStyle = (Style) FindResource("styleDgCellDec");
+                    }
+                }
+                else
+                {
+                    if (dgTextColumn != null) 
+                    {
+                        dgTextColumn.CellStyle = (Style) FindResource("styleDgCellStr");
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name, MethodInfo.GetCurrentMethod().Name,
+                    " -> " + ex.Message);
+            }
         }
 
         private void BtnCancelItems_Click(object sender, RoutedEventArgs e)

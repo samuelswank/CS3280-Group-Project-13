@@ -5,19 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GroupProject.Items"
         mc:Ignorable="d"
-        Title="wndItems" Height="225" Width="400">
+        Title="Items" Height="340" Width="600">
+
+    <Window.Resources>
+        <Style x:Key="styleDgColHead" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="styleDgCellDec" TargetType="DataGridCell">
+            <Setter Property="TextBlock.TextAlignment" Value="Right" />
+        </Style>
+        <Style x:Key="styleDgCellStr" TargetType="DataGridCell">
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+  
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60*" />
+            <ColumnDefinition Width="40*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="80*" />
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" Name="dgItems">
-        </DataGrid>
-        <WrapPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <DataGrid Grid.Column="0" Grid.Row="0" Name="dgItems" AutoGeneratingColumn="DgItems_AutoGeneratingColumn"/>
+        <WrapPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!--
             <Button Name="btnCancelItems" Content="Cancel" Width="100" Margin="25,0" Click="BtnCancelItems_Click">
             </Button>
             <Button Name="btnSubmitItems" Content="Submit" Width="100" Margin="25,0">
             </Button>
+            -->
         </WrapPanel>
     </Grid>
 </Window>
