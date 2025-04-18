@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -30,7 +31,8 @@ namespace GroupProject.Items
 
         bool DgItems_CurrentCellChangedEnabled;
 
-        const string sCurrencyRegex = @"^(\$)?(([1 - 9]\d{0,2}(\,\d{3})*)| ([1 - 9]\d *)| (0))(\.\d{2})?$";
+        const string sCurrencyRegex = @"^[\p{Sc}]?\s?\d{1,3}(,\d{3})*(\.\d{2})?$";
+
 
 
         public wndItems()
@@ -90,7 +92,7 @@ namespace GroupProject.Items
                 if (e.PropertyType == typeof(decimal))
                 {
                     Style styleDgCellDec = FindResource("styleDgCellDec") as Style;
-                    if (dgTextColumn != null)
+                    if (dgTextColumn != null && styleDgCellDec != null)
                     {
                         dgTextColumn.Binding.StringFormat = "{0:C}";
                         dgTextColumn.CellStyle = styleDgCellDec;
@@ -149,37 +151,46 @@ namespace GroupProject.Items
 
         private void BtnEditItem_Click(object sender, RoutedEventArgs e)
         {
-            DgItems_CurrentCellChangedEnabled = false;
-
-            string sItemCode = null;
+            string sItemCode = string.Empty;
             string sItemDesc = txtBoxItemDesc.Text;
-            string sCost = null;
+            string sCost = string.Empty;
 
             try
             {
                 int iNumRows = itemsLogic.GetItemCodeCount(txtBoxItemCode.Text);
-                if (iNumRows > 0) sItemCode = txtBoxItemCode.Text;
-                if (Regex.IsMatch(txtBoxCost.Text, sCurrencyRegex)) sCost = '$' + txtBoxCost.Text;
 
-                if (sItemCode != null && sItemDesc.Length > 0 && sCost != null)
+                if (iNumRows == 1) sItemCode += txtBoxItemCode.Text;
+                if (Regex.IsMatch(txtBoxCost.Text, sCurrencyRegex)) sCost +=  txtBoxCost.Text;
+
+
+                if (sItemCode != string.Empty && sItemDesc.Length > 0 && sCost != string.Empty)
                 {
-                    handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                        MethodInfo.GetCurrentMethod().Name, " -> " + sItemCode + ' ' + sItemDesc + ' ' + sCost);
+                    if (!itemsLogic.LineItemHasInvoice(sItemCode))
+                    {
+                        ClearTextBoxes();
+                        itemsLogic.UpdateItemDesc(sItemCode, sItemDesc, sCost);
 
-                    ClearTextBoxes();
-                    dgItems.Items.Clear();
-                    itemsLogic.UpdateItemDesc(sItemCode, sItemDesc, sCost);
-                    dgItems.ItemsSource = itemsLogic.GetItems();
+                        dgItems.ItemsSource = itemsLogic.GetItems();
+
+                        clsItem editedItem = dgItems.Items
+                            .Cast<clsItem>()
+                            .Where(item => item.ItemCode == sItemCode).First();
+
+                        if (editedItem != null)
+                        {
+                            dgItems.ScrollIntoView(editedItem);
+                            dgItems.SelectedItem = editedItem;
+                            dgItems.Focus();
+                        }                     
+                    }
+                    // TODO: Add message so that user knows why they could not edit an item with an invoice
                 }
+                // TODO: Add message so that user know which TextBox Field to fix
             }
             catch (Exception ex)
             {
                 handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                     MethodInfo.GetCurrentMethod().Name, " -> " + ex.Message);
-            }
-            finally
-            {
-                DgItems_CurrentCellChangedEnabled = false;
             }
         }
 
