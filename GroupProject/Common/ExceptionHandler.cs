@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assignment6
+namespace GroupProject
 {
     /// <summary>
     /// Class which handles exceptions for top-level methods
