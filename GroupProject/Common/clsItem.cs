@@ -23,5 +23,7 @@ namespace GroupProject.Common
         /// Cost in USD dollars and cents of the item formatted as ${dollars}.{cents}
         /// </summary>
         public decimal Cost { get; set; }
+
+        public override string ToString() { return "{ " + ItemCode + ", " + ItemDesc + ", " + Cost + " }"; }
     }
 } 
