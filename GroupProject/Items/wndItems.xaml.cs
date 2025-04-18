@@ -79,10 +79,7 @@ namespace GroupProject.Items
                 }
                 else
                 {
-                    if (dgTextColumn != null) 
-                    {
-                        dgTextColumn.CellStyle = (Style) FindResource("styleDgCellStr");
-                    }
+                    if (dgTextColumn != null) dgTextColumn.CellStyle = (Style) FindResource("styleDgCellStr");   
                 }
                 
             }

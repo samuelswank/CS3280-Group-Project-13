@@ -17,6 +17,20 @@
         <Style x:Key="styleDgCellStr" TargetType="DataGridCell">
             <Setter Property="TextBlock.TextAlignment" Value="Center" />
         </Style>
+        <Style x:Key="styleWrapPanel" TargetType="WrapPanel">
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+        <Style x:Key="styleLabel" TargetType="Label">
+            <Setter Property="Width" Value="100" />
+        </Style>
+        <Style x:Key="styleTextBox" TargetType="TextBox">
+            <Setter Property="Width" Value="100" />
+        </Style>
+        <Style x:Key="styleButton" TargetType="Button">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="15,0" />
+            <Setter Property="Width" Value="75" />
+        </Style>
     </Window.Resources>
   
     <Grid>
@@ -25,17 +39,43 @@
             <ColumnDefinition Width="40*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80*" />
-            <RowDefinition Height="20*"/>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="90*" />
         </Grid.RowDefinitions>
-        <DataGrid Grid.Column="0" Grid.Row="0" Name="dgItems" AutoGeneratingColumn="DgItems_AutoGeneratingColumn"/>
-        <WrapPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <!--
-            <Button Name="btnCancelItems" Content="Cancel" Width="100" Margin="25,0" Click="BtnCancelItems_Click">
-            </Button>
-            <Button Name="btnSubmitItems" Content="Submit" Width="100" Margin="25,0">
-            </Button>
-            -->
-        </WrapPanel>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Items" HorizontalAlignment="Center" FontSize="16">
+        </Label>
+        <DataGrid Grid.Column="0" Grid.Row="1" Name="dgItems" IsReadOnly="True" Margin="15" AutoGeneratingColumn="DgItems_AutoGeneratingColumn"/>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80*" />
+                <RowDefinition Height="20*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <WrapPanel Style="{StaticResource styleWrapPanel}">
+                    <Label Style="{StaticResource styleLabel}" Content="Item Code: ">
+                    </Label>
+                    <TextBox x:Name="txtBoxItemCode" Style="{StaticResource styleTextBox}">
+                    </TextBox>
+                </WrapPanel>
+                <WrapPanel Style="{StaticResource styleWrapPanel}">
+                    <Label Style="{StaticResource styleLabel}" Content="Item Description: ">
+                    </Label>
+                    <TextBox x:Name="txtBoxItemDesc" Style="{StaticResource styleTextBox}">
+                    </TextBox>
+                </WrapPanel>
+                <WrapPanel Style="{StaticResource styleWrapPanel}">
+                    <Label Style="{StaticResource styleLabel}" Content="Cost: ">
+                    </Label>
+                    <TextBox x:Name="txtBoxCost" Style="{StaticResource styleTextBox}">
+                    </TextBox>
+                </WrapPanel>
+                <WrapPanel Margin="0,25">
+                    <Button x:Name="btnEditItem" Style="{StaticResource styleButton}" Content="Edit Item" />
+                    <Button x:Name="btnAddItem" Style="{StaticResource styleButton}" Content="Add Item" />
+                </WrapPanel>
+                <Button x:Name="btnDeleteItem" Content="Delete" Width="75" />
+            </StackPanel>
+            <Button Grid.Row="2" x:Name="btnMainWindow" Content="Return to Main Window" Margin="50,12" />
+        </Grid>
     </Grid>
 </Window>
