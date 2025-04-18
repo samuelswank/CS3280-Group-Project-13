@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GroupProject.Items"
         mc:Ignorable="d"
-        Title="Items" Height="450" Width="800">
+        Title="Items" Height="450" Width="800" MouseDoubleClick="WndItems_MouseDoubleClick">
 
     <Window.Resources>
         <Style x:Key="styleDgColHead" TargetType="DataGridColumnHeader">
@@ -70,12 +70,12 @@
                     </TextBox>
                 </WrapPanel>
                 <WrapPanel Margin="0,25">
-                    <Button x:Name="btnEditItem" Style="{StaticResource styleButton}" Content="Edit Item" />
+                    <Button x:Name="btnEditItem" Style="{StaticResource styleButton}" Content="Edit Item" Click="BtnEditItem_Click" />
                     <Button x:Name="btnAddItem" Style="{StaticResource styleButton}" Content="Add Item" />
                 </WrapPanel>
                 <Button x:Name="btnDeleteItem" Content="Delete" FontSize="16" Width="100" />
             </StackPanel>
-            <Button Grid.Row="2" x:Name="btnMainWindow" Content="Return to Main Window" FontSize="15" Margin="75,25" />
+            <Button Grid.Row="2" x:Name="btnMainWindow" Content="Return to Main Window" FontSize="15" Margin="75,25" Click="BtnMainWindow_Click" />
         </Grid>
     </Grid>
 </Window>
