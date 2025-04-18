@@ -92,5 +92,18 @@ namespace GroupProject.Items
                 throw new Exception(ex.Message, ex.InnerException);
             }
         }
+
+        public static string LineItemHasInvoice(string sItemCode)
+        {
+            try
+            {
+                string sSQL = "SELECT COUNT(*) FROM LineItems WHERE ItemCode = '" + sItemCode + "';";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
     }
 }

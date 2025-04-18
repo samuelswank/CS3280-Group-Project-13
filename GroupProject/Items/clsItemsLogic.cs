@@ -89,9 +89,9 @@ namespace GroupProject.Items
             {
                 iNumRows = db.ExecuteNonQuery(sSQL);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message, e.InnerException);
+                throw new Exception(ex.Message, ex.InnerException);
             }
 
             return iNumRows;
@@ -106,9 +106,9 @@ namespace GroupProject.Items
             {
                 iNumRows = db.ExecuteNonQuery(sSQL);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message, e.InnerException);
+                throw new Exception(ex.Message, ex.InnerException);
             }
 
             return iNumRows;
@@ -123,9 +123,9 @@ namespace GroupProject.Items
             {
                 iNumRows = db.ExecuteNonQuery(sSQL);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message, e.InnerException);
+                throw new Exception(ex.Message, ex.InnerException);
             }
 
             return iNumRows;
@@ -140,12 +140,29 @@ namespace GroupProject.Items
                 sNumRows = db.ExecuteScalarSQL(sSQL);
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message, e.InnerException);
+                throw new Exception(ex.Message, ex.InnerException);
             }
 
             return int.Parse(sNumRows);
+        }
+
+        public bool LineItemHasInvoice(string sItemCode)
+        {
+            string sSQL = clsItemsSQL.LineItemHasInvoice(sItemCode);
+            bool lineItemHasInvoice = true;
+            try
+            {
+                string sNumRows = db.ExecuteScalarSQL(sSQL);
+                int iNumRows = int.Parse(sNumRows);
+                if (iNumRows == 0) lineItemHasInvoice = false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+            return lineItemHasInvoice;
         }
     }
 }
