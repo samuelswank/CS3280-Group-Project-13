@@ -44,7 +44,7 @@ namespace GroupProject.Items
                 // fill class with data
                 item.ItemCode = ds.Tables[0].Rows[i][0].ToString();
                 item.ItemDesc = ds.Tables[0].Rows[i].ItemArray[1].ToString();
-                item.Cost = ds.Tables[0].Rows[i].ItemArray[2].ToString();
+                item.Cost = (decimal) ds.Tables[0].Rows[i].ItemArray[2];
 
                 // add flight object to flights list
                 ItemsList.Add(item);
