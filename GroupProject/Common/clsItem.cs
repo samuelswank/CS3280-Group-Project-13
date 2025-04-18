@@ -23,8 +23,5 @@ namespace GroupProject.Common
         /// Cost in USD dollars and cents of the item formatted as ${dollars}.{cents}
         /// </summary>
         public string Cost { get; set; }
-
-        
     }
-    
-    } 
+} 
