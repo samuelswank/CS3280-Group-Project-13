@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Assignment6;
 using GroupProject.Common;
 using GroupProject.Items;
 
@@ -90,14 +89,17 @@ namespace GroupProject.Items
             }
         }
 
-        private void BtnCancelItems_Click(object sender, RoutedEventArgs e)
+        private void DgItems_CurrentCellChanged(object sender, EventArgs e)
         {
-            this.Close();
-        }
+            DataGrid dg = (DataGrid) sender;
+            clsItem currItem = (clsItem) dg.CurrentCell.Item;
 
-        private void BtnSubmitItems_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            if (currItem != null)
+            {
+                txtBoxItemCode.Text = currItem.ItemCode;
+                txtBoxItemDesc.Text = currItem.ItemDesc;
+                txtBoxCost.Text = currItem.Cost.ToString();
+            }
         }
     }
 }
