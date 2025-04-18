@@ -14,76 +14,11 @@ namespace GroupProject.Items
 {
     internal class clsItemsLogic
     {
-        public class clsDBAccess // Will be merged with clsDBAccess in clsSearchLogic at a later stage
-        {
-            /// <summary>
-            /// Connection string to the database.
-            /// </summary>
-            private string sConnectionString;
-
-            /// <summary>
-            /// Constructor that sets the connection string to the database
-            /// </summary>
-            public clsDBAccess()
-            {
-                sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetCurrentDirectory() +
-                    "\\Invoice.mdb";
-            }
-
-            /// <summary>
-            /// This method takes an SQL statment that is passed in and executes it.  The resulting values
-            /// are returned in a DataSet.  The number of rows returned from the query will be put into
-            /// the reference parameter iRetVal.
-            /// </summary>
-            /// <param name="sSQL">The SQL statement to be executed.</param>
-            /// <param name="iRetVal">Reference parameter that returns the number of selected rows.</param>
-            /// <returns>Returns a DataSet that contains the data from the SQL statement.</returns>
-            public DataSet ExecuteSQLStatement(string tableName, string sSQL, ref int iRetVal)
-            {
-                try
-                {
-                    //Create a new DataSet
-                    DataSet ds = new DataSet();
-
-                    using (OleDbConnection conn = new OleDbConnection(sConnectionString))
-                    {
-
-                        using (OleDbDataAdapter adapter = new OleDbDataAdapter())
-                        {
-
-                            //Open the connection to the database
-                            conn.Open();
-
-                            //Add the information for the SelectCommand using the SQL statement and the connection object
-                            adapter.SelectCommand = new OleDbCommand(sSQL, conn);
-                            adapter.SelectCommand.CommandTimeout = 0;
-
-                            // Fill up the DataSet with data
-                            // I had to change this in order to access the specific tables
-                            // tableName allows the user to access both ItemsDesc and LineItems Tables
-                            adapter.Fill(ds, tableName);
-                        }
-                    }
-
-                    //Set the number of values returned
-                    iRetVal = ds.Tables[0].Rows.Count;
-
-                    //return the DataSet
-                    return ds;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                        MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-                }
-            }
-        }
+        static string sConnectionString = "Invoice.mdb";
+        clsDBAccess db = new clsDBAccess(sConnectionString);
 
         public List<clsItem> GetItems()
         {
-            clsDBAccess db;
-            db = new clsDBAccess();
-
             string sSQL = clsItemsSQL.GetItems();
 
             List<clsItem> ItemsList = new List<clsItem>();
@@ -94,7 +29,7 @@ namespace GroupProject.Items
 
             try
             {
-                ds = db.ExecuteSQLStatement("ItemsDesc", sSQL, ref iRet);
+                ds = db.ExecuteSQLStatement(sSQL, ref iRet);
             }
             catch (Exception ex)
             {
@@ -120,9 +55,6 @@ namespace GroupProject.Items
 
         public List<string> GetLineItemInvoiceNums(string sItemCode)
         {
-            clsDBAccess db;
-            db = new clsDBAccess();
-
             string sSQL = clsItemsSQL.GetLineItemInvoiceNums(sItemCode);
 
             List<string> ItemInvoiceNumsList = new List<string>();
@@ -133,7 +65,7 @@ namespace GroupProject.Items
 
             try
             {
-                ds = db.ExecuteSQLStatement("ItemsDesc", sSQL, ref iRet);
+                ds = db.ExecuteSQLStatement(sSQL, ref iRet);
             }
             catch (Exception ex)
             {
@@ -148,10 +80,55 @@ namespace GroupProject.Items
             return ItemInvoiceNumsList;
         }
 
-        // TODO: Implement UpdateItemDesc, InsertItem, and DeleteItem
-        //  NOTE: This requires another method to be added to the
-        //        clsDBAccess class that will address UPDATE, INSERT, and
-        //        DELETE operations...likely returning a bool indicating
-        //        whether the operation was successfull or not
+        public int UpdateItemDesc(string sItemCode, string sItemDesc, string sCost)
+        {
+            string sSQL = clsItemsSQL.UpdateItemDesc(sItemCode, sItemDesc, sCost);
+            int iNumRows;
+
+            try
+            {
+                iNumRows = db.ExecuteNonQuery(sSQL);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e.InnerException);
+            }
+
+            return iNumRows;
+        }
+
+        public int InsertItem(string sItemCode, string sItemDesc, string sCost)
+        {
+            string sSQL = clsItemsSQL.InsertItem(sItemCode, sItemDesc, sCost);
+            int iNumRows;
+
+            try
+            {
+                iNumRows = db.ExecuteNonQuery(sSQL);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e.InnerException);
+            }
+
+            return iNumRows;
+        }
+
+        public int DeleteItem(string sItemCode)
+        {
+            string sSQL = clsItemsSQL.DeleteItem(sItemCode);
+            int iNumRows;
+
+            try
+            {
+                iNumRows = db.ExecuteNonQuery(sSQL);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e.InnerException);
+            }
+
+            return iNumRows;
+        }
     }
 }
