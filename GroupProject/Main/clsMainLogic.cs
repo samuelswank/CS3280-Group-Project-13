@@ -63,7 +63,7 @@ namespace GroupProject.Main
                 {
                     ItemCode = row["ItemCode"].ToString(),
                     ItemDesc = row["ItemDesc"].ToString(),
-                    Cost = row["Cost"].ToString()
+                    Cost = (decimal) row["Cost"]
                 };
                 Invoice.Add(inv);
             }
@@ -98,12 +98,12 @@ namespace GroupProject.Main
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public float AddTotalCost(List<clsItem> items)
+        public decimal AddTotalCost(List<clsItem> items)
         {
-            float total = 0;
+            decimal total = 0;
             foreach(clsItem item in items)
             {
-                total += float.Parse(item.Cost);
+                total += item.Cost;
             }
             return total;
         }
