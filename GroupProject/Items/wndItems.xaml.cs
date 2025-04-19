@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +18,8 @@ using System.Windows.Shapes;
 using GroupProject.Common;
 using GroupProject.Items;
 
+using static System.ComponentModel.ListSortDirection;
+
 namespace GroupProject.Items
 {
     /// <summary>
@@ -29,15 +32,7 @@ namespace GroupProject.Items
 
         ExceptionHandler handler = new ExceptionHandler("Error.txt");
 
-        bool DgItems_CurrentCellChangedEnabled;
-
         const string sCurrencyRegex = @"^[\p{Sc}]?\s?\d{1,3}(,\d{3})*(\.\d{2})?$";
-
-        enum MethodToValidate
-        {
-            BtnEditItem_Click,
-            BtnAddItem_Click
-        }
 
         public wndItems()
         {
@@ -50,6 +45,9 @@ namespace GroupProject.Items
 
                 items = itemsLogic.GetItems();
                 dgItems.ItemsSource = items;
+
+                dgItems.Items.SortDescriptions.Add(new SortDescription("ItemCode",
+                    ListSortDirection.Ascending));
             }
             catch (Exception ex)
             {
@@ -82,11 +80,12 @@ namespace GroupProject.Items
                 {
                     e.Column.Header = "Item Code";
                     e.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                    e.Column.SortDirection = ListSortDirection.Ascending;
                 }
                 else if (sHeaderName == "ItemDesc")
                 {
-                    e.Column.Width = new DataGridLength(2, DataGridLengthUnitType.Star);
                     e.Column.Header = "Item Description";
+                    e.Column.Width = new DataGridLength(2, DataGridLengthUnitType.Star);
                 }
                 else e.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
 
@@ -110,8 +109,6 @@ namespace GroupProject.Items
                         dgTextColumn.CellStyle = styleDgCellStr;
                     }
                 }
-
-                DgItems_CurrentCellChangedEnabled = true;
             }
             catch (Exception ex)
             {
@@ -124,25 +121,21 @@ namespace GroupProject.Items
         {
             try
             {
-                if (DgItems_CurrentCellChangedEnabled == true)
+                DataGrid dg = (DataGrid) sender;
+                var currItem = dg.CurrentCell.Item as clsItem;
+                if (currItem != null)
                 {
+                    txtBoxItemCode.Text = currItem.ItemCode;
+                    txtBoxItemDesc.Text = currItem.ItemDesc;
 
-                    DataGrid dg = (DataGrid) sender;
-                    var currItem = dg.CurrentCell.Item as clsItem;
-                    if (currItem != null)
+                    decimal decCost = currItem.Cost;
+                    string sCost = currItem.Cost.ToString();
+                    if (decCost == Math.Floor(decCost))
                     {
-                        txtBoxItemCode.Text = currItem.ItemCode;
-                        txtBoxItemDesc.Text = currItem.ItemDesc;
-
-                        decimal decCost = currItem.Cost;
-                        string sCost = currItem.Cost.ToString();
-                        if (decCost == Math.Floor(decCost))
-                        {
-                            sCost += ".00";
-                        }
-
-                        txtBoxCost.Text = sCost;
+                        sCost += ".00";
                     }
+
+                    txtBoxCost.Text = sCost;            
                 }                
             }
             catch (Exception ex)
@@ -215,6 +208,32 @@ namespace GroupProject.Items
 
         }
 
+        private void BtnDeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string sItemCode = string.Empty;
+                var currItem = dgItems.SelectedItem as clsItem;
+
+                if (currItem != null)
+                {
+                    sItemCode = currItem.ItemCode;
+                    if (!itemsLogic.ItemInLineItems(sItemCode))
+                    {
+                        itemsLogic.DeleteItem(sItemCode);
+                        dgItems.ItemsSource = itemsLogic.GetItems();
+                    }
+                    // TODO: Add message so that user know which Invoices sItemCode belongs to
+                }
+                // TODO: Add message so that user know that an item has not been selected
+            }
+            catch (Exception ex)
+            {
+                handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, " -> " + ex.Message);
+            }
+        }
+
         private void BtnMainWindow_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -229,20 +248,6 @@ namespace GroupProject.Items
             }
         }
 
-        private void ClearTextBoxes()
-        {
-            try
-            {
-                txtBoxItemCode.Clear();
-                txtBoxItemDesc.Clear();
-                txtBoxCost.Clear();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex.InnerException);
-            }
-        }
-
         private void FocusDataGridRow(string sItemCode)
         {
             clsItem editedItem = dgItems.Items
@@ -254,6 +259,20 @@ namespace GroupProject.Items
                 dgItems.ScrollIntoView(editedItem);
                 dgItems.SelectedItem = editedItem;
                 dgItems.Focus();
+            }
+        }
+
+        private void ClearTextBoxes()
+        {
+            try
+            {
+                txtBoxItemCode.Clear();
+                txtBoxItemDesc.Clear();
+                txtBoxCost.Clear();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
             }
         }
     }
