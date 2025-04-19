@@ -56,8 +56,8 @@ namespace GroupProject.Items
         {
             try
             {
-                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Code) Values(" + sItemCode + ", "
-                    + sItemDesc + ", " + sCost + ");";
+                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) Values('" +
+                    sItemCode + "', '" + sItemDesc + "', " + sCost + ");";
 
                 return sSQL;
             }
@@ -80,7 +80,7 @@ namespace GroupProject.Items
             }
         }
 
-        public static string GetItemCodeCount(string sItemCode)
+        public static string ItemInItemDesc(string sItemCode)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace GroupProject.Items
             }
         }
 
-        public static string LineItemHasInvoice(string sItemCode)
+        public static string ItemInLineItems(string sItemCode)
         {
             try
             {
