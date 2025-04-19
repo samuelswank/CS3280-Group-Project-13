@@ -131,38 +131,39 @@ namespace GroupProject.Items
             return iNumRows;
         }
 
-        public int GetItemCodeCount(string sItemCode)
+        public bool ItemInItemDesc(string sItemCode)
         {
-            string sSQL = clsItemsSQL.GetItemCodeCount(sItemCode);
-            string sNumRows;
+            string sSQL = clsItemsSQL.ItemInItemDesc(sItemCode);
+            bool itemInItemDesc = false;
             try
             {
-                sNumRows = db.ExecuteScalarSQL(sSQL);
-
+               string sNumRows = db.ExecuteScalarSQL(sSQL);
+               int iNumRows = int.Parse(sNumRows);
+               if (iNumRows == 1)  itemInItemDesc = true;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
 
-            return int.Parse(sNumRows);
+            return itemInItemDesc;
         }
 
-        public bool LineItemHasInvoice(string sItemCode)
+        public bool ItemInLineItems(string sItemCode)
         {
-            string sSQL = clsItemsSQL.LineItemHasInvoice(sItemCode);
-            bool lineItemHasInvoice = true;
+            string sSQL = clsItemsSQL.ItemInLineItems(sItemCode);
+            bool itemInLineItems = true;
             try
             {
                 string sNumRows = db.ExecuteScalarSQL(sSQL);
                 int iNumRows = int.Parse(sNumRows);
-                if (iNumRows == 0) lineItemHasInvoice = false;
+                if (iNumRows == 0) itemInLineItems = false;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex.InnerException);
             }
-            return lineItemHasInvoice;
+            return itemInLineItems;
         }
     }
 }
