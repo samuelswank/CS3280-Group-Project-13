@@ -1,6 +1,8 @@
-﻿using GroupProject.Common;
+﻿using Assignment6;
+using GroupProject.Common;
 using GroupProject.Items;
 using GroupProject.Search;
+using System.Globalization;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,9 +21,30 @@ namespace GroupProject.Main
     /// </summary>
     public partial class wndMain : Window
     {
+        /// <summary>
+        /// creates a item list
+        /// </summary>
         private List<clsItem> Items;
-        private clsMainLogic getItems;
-        
+        /// <summary>
+        /// creates a main logic object
+        /// </summary>
+        private clsMainLogic mainLogic;
+        /// <summary>
+        /// creates a invoice object
+        /// </summary>
+        private clsInvoice invoice;
+        /// <summary>
+        /// creates a invoice list
+        /// </summary>
+        private List<clsInvoice> Invoice;
+        /// <summary>
+        /// creates a selected item object
+        /// </summary>
+        private clsItem selectedItem;
+
+
+
+
         /// <summary>
         /// The constructor is initialized and also will completely shutdown if user clicks X on top right
         /// </summary>
@@ -30,7 +53,9 @@ namespace GroupProject.Main
             InitializeComponent();
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
             Items = new List<clsItem>();
-            getItems = new clsMainLogic();
+            mainLogic = new clsMainLogic();
+            Invoice = new List<clsInvoice>();
+
             LoadItems();
         }
 
@@ -50,11 +75,22 @@ namespace GroupProject.Main
         /// <param name="e"></param>
         private void SearchInvoice_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
-            wndSearch wndSearch = new wndSearch();
-            wndSearch.ShowDialog();
-            this.Show();
-            
+            try
+            {
+                this.Hide();
+                wndSearch wndSearch = new wndSearch();
+                wndSearch.ShowDialog();
+                invoice = (clsInvoice)wndSearch.cboInvoiceNumber.SelectedItem;
+                this.Show();
+                LoadInvoice(invoice.InvoiceID);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+
+
             //The main window will grab the invoice number from the search window property, and then load it into the datagrid and have it disabled for any edits.
 
         }
@@ -65,34 +101,287 @@ namespace GroupProject.Main
         /// <param name="e"></param>
         private void EditItems_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                this.Hide();
+                wndItems wndItem = new wndItems();
+                wndItem.ShowDialog();
+                this.Show();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
             //Once edit items window is hidden, if the value of HasItemBeenChanged is true, then update the items combo box
-            this.Hide();
-            wndItems wndItem = new wndItems();
-            wndItem.ShowDialog();
-            this.Show();
-        }
 
+        }
+        /// <summary>
+        /// Loads items into the combobox, will check if the items have been updated or not
+        /// </summary>
         private void LoadItems()
         {
             try
             {
-                Items = getItems.AllItems();
+                Items = mainLogic.AllItems();
                 cboItems.ItemsSource = null;
                 cboItems.ItemsSource = Items;
                 cboItems.DisplayMemberPath = "ItemDesc";
                 cboItems.SelectedValuePath = "ItemCode";
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Loads the invoice into the datagrid, and will also load the invoice number and date into the labels
+        /// </summary>
+        /// <param name="InvoiceID"></param>
+        private void LoadInvoice(string InvoiceID)
+        {
+            try
+            {
+                Items = mainLogic.GetInvoice(InvoiceID);
+                invoiceDataGrid.ItemsSource = Items;
+                invoice.InvoiceCost = mainLogic.AddTotalCost(Items).ToString();
+                totalCostlbl.Content = "Total: " + invoice.InvoiceCost;
+                invoiceDate.Content = invoice.InvoiceDate;
+                invoiceNum.Content = invoice.InvoiceID;
+                enableControls();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// When the user selects an item from the combobox, it will display the cost of the item in the label
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cboItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                selectedItem = (clsItem)cboItems.SelectedItem;
+                itemCost.Content = selectedItem.Cost;
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+        }
+        /// <summary>
+        /// When the user clicks the add button, it will add the selected item to the invoice
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void addBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                selectedItem = (clsItem)cboItems.SelectedItem;
+                int lineItemNumber = invoiceDataGrid.Items.Count + 1;
+                mainLogic.InsertLineItem(invoice.InvoiceID, lineItemNumber.ToString(), selectedItem.ItemCode);
+                LoadInvoice(invoice.InvoiceID);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+
+        }
+        /// <summary>
+        /// When the user clicks the remove button, it will remove the selected item from the invoice
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void removeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                selectedItem = (clsItem)invoiceDataGrid.SelectedItem;
+                mainLogic.DeleteLineItem(invoice.InvoiceID, selectedItem.ItemCode);
+                LoadInvoice(invoice.InvoiceID);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+        }
+        /// <summary>
+        /// enables the controls for editing the invoice
+        /// </summary>
+        private void enableControls()
+        {
+            try
+            {
+                editInvoicebtn.IsEnabled = true;
+                saveInvoicebtn.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
+        /// <summary>
+        /// When the user clicks the save button, it will update the invoice with the new total cost
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveInvoicebtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                mainLogic.UpdateTotalCost(invoice.InvoiceID, float.Parse(invoice.InvoiceCost));
+                lockUI();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+
+        }
+        /// <summary>
+        /// When the user clicks the edit button, it will enable the controls for editing the invoice
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editInvoicebtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                addBtn.IsEnabled = true;
+                removeBtn.IsEnabled = true;
+                cboItems.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+
+        }
+        /// <summary>
+        /// locks the UI controls for editing the invoice
+        /// </summary>
+        private void lockUI()
+        {
+            try
+            {
+                editInvoicebtn.IsEnabled = false;
+                saveInvoicebtn.IsEnabled = false;
+                addBtn.IsEnabled = false;
+                removeBtn.IsEnabled = false;
+                cboItems.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        /// <summary>
+        /// When the user clicks the create invoice button, it will show the date input box and the create button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void createInvoicebtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                createInvoiceDatetxt.Visibility = Visibility.Visible;
+                newdatebtn.Visibility = Visibility.Visible;
+                EnterDate.Visibility = Visibility.Visible;
+                selectedItem = null;
             }
             catch (Exception)
             {
 
                 throw;
             }
+            
         }
-
-        private void cboItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// When the user clicks the create button, it will create a new invoice with the date entered in the input box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newdatebtn_Click(object sender, RoutedEventArgs e)
         {
-            var selectedItem = (clsItem)cboItems.SelectedItem;
-            itemCost.Content = selectedItem.Cost;
+            // hide the UI prompts
+            createInvoiceDatetxt.Visibility = Visibility.Hidden;
+            newdatebtn.Visibility = Visibility.Hidden;
+            EnterDate.Visibility = Visibility.Hidden;
+
+            try
+            {
+                string input = createInvoiceDatetxt.Text.Trim();
+
+                // 1) Empty check
+                if (string.IsNullOrEmpty(input))
+                {
+                    MessageBox.Show(
+                        "Please enter a date",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                    return;
+                }
+
+                
+                DateTime parsedDate;
+                string[] formats = { "MM/dd/yyyy" };
+                if (!DateTime.TryParseExact(
+                        input,
+                        formats,
+                        CultureInfo.CurrentCulture,
+                        DateTimeStyles.None,
+                        out parsedDate))
+                {
+                    MessageBox.Show(
+                        "Invalid date format.\nPlease enter a valid date like MM/dd/yyyy.",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                    createInvoiceDatetxt.Focus();
+                    createInvoiceDatetxt.SelectAll();
+                    return;
+                }
+
+                
+                mainLogic.InsertInvoice(parsedDate.ToString("yyyy-MM-dd"));
+
+                
+                LoadItems();
+                invoiceDate.Content = parsedDate.ToString("MM/dd/yyyy");
+                invoiceNum.Content = "TBD";
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+        /// <summary>
+        /// Handles exceptions and displays an error message to the user
+        /// </summary>
+        /// <param name="ex"></param>
+        private void HandleException(Exception ex)
+        {
+            string message = $"An error occured:\n{ex.Message}";
+            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

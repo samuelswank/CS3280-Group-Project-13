@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GroupProject.Common
 {
-    internal class clsInvoice
+    public class clsInvoice
     {
         public string InvoiceID { get; set; }
         public string InvoiceDate { get; set; }

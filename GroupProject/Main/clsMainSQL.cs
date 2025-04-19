@@ -24,7 +24,7 @@ namespace GroupProject.Main
         /// <param name="invoiceNum"></param>
         /// <param name="newTotal"></param>
         /// <returns></returns>
-        public int UpdateTotal(int invoiceNum, double newTotal)
+        public int UpdateTotal(string invoiceNum, double newTotal)
         {
             string sSQL = $"UPDATE Invoices SET TotalCost = {newTotal} WHERE InvoiceNum = {invoiceNum}";
             return ExecuteNonQuery(sSQL);
@@ -36,9 +36,10 @@ namespace GroupProject.Main
         /// <param name="lineItemNum"></param>
         /// <param name="itemCode"></param>
         /// <returns></returns>
-        public int InsertLineItems(int invoiceNum, int lineItemNum, string itemCode)
+        public int InsertLineItems(string invoiceNum, string lineItemNum, string itemCode)
         {
-            string sSQL = $"INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) VALUES ({invoiceNum}, {lineItemNum}, '{itemCode})'";
+            string sSQL = $"INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) VALUES ({invoiceNum}, {lineItemNum}, '{itemCode}')";
+
             return ExecuteNonQuery(sSQL);
         }
         /// <summary>
@@ -49,7 +50,8 @@ namespace GroupProject.Main
         /// <returns></returns>
         public int InsertInvoice(string invoiceDate, int totalCost)
         {
-            string sSQL = $"INSERT INTO Invoices (InvoiceDate, TotalCost) VALUES (#{invoiceDate}#, {totalCost})'";
+            string sSQL = $"INSERT INTO Invoices (InvoiceDate, TotalCost) VALUES (#{invoiceDate}#, {totalCost});";
+
             return ExecuteNonQuery(sSQL);
         }
         /// <summary>
@@ -57,7 +59,7 @@ namespace GroupProject.Main
         /// </summary>
         /// <param name="invoiceNum"></param>
         /// <returns></returns>
-        public DataSet GetInvoice(int invoiceNum)
+        public DataSet GetInvoice(string invoiceNum)
         {
             int iRetVal = 0;
             string sSQL = $"SELECT InvoiceNum, InvoiceDate, TotalCost FROM Invoices WHERE InvoiceNum = {invoiceNum}";
@@ -78,7 +80,7 @@ namespace GroupProject.Main
         /// </summary>
         /// <param name="invoiceNum"></param>
         /// <returns></returns>
-        public DataSet GetInvoiceLineItems(int invoiceNum)
+        public DataSet GetInvoiceLineItems(string invoiceNum)
         {
             int iRetVal = 0;
             string sSQL = $"SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost " +
@@ -92,12 +94,24 @@ namespace GroupProject.Main
         /// </summary>
         /// <param name="invoiceNum"></param>
         /// <returns></returns>
-        public int DeleteInvoiceLineItems(int invoiceNum)
+        public int DeleteInvoiceLineItems(string invoiceNum)
         {
             string sSQL = $"DELETE FROM LineItems WHERE InvoiceNum = {invoiceNum}";
             return ExecuteNonQuery(sSQL);
         }
+        /// <summary>
+        /// Deletes a specific line item from an invoice.
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <param name="itemCode"></param>
+        /// <returns></returns>
+        public int DeleteLineItemFromInvoice(string invoiceNum, string itemCode)
+        {
+            string sSQL = $"DELETE FROM LineItems WHERE InvoiceNum = {invoiceNum} AND ItemCode = '{itemCode}'";
+            return ExecuteNonQuery(sSQL);
+        }
 
+        
 
 
         /// <summary>

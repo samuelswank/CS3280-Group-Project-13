@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GroupProject.Main"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Menu VerticalAlignment="Top">
+        Title="MainWindow" Height="650" Width="900">
+    <Grid Margin="0,0,0,-6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="229*"/>
+            <RowDefinition Height="258*"/>
+            <RowDefinition Height="153*"/>
+        </Grid.RowDefinitions>
+        <Menu VerticalAlignment="Top" Height="24">
             <MenuItem x:Name="fileControl" Header="File" Width="60">
                 <MenuItem x:Name="exitBtn" Header="Exit" Click="Exit_Click"/>
             </MenuItem>
@@ -17,22 +22,27 @@
             </MenuItem>
         </Menu>
 
-        <Label x:Name="invoicelbl" Content="Invoice " 
+        <Label x:Name="invoicelbl" Content="Invoice Management System" 
        HorizontalAlignment="Center" VerticalAlignment="Top"
-       FontSize="20" FontWeight="Bold" Margin="0,30,0,0"/>
-        <Label x:Name="invoiceDatelbl" Content="Invoice Date :" HorizontalAlignment="Left" Margin="234,102,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label x:Name="invoiceNumlbl" Content="Invoice Number :" HorizontalAlignment="Left" Margin="429,102,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label x:Name="totalCostlbl" Content="Total Cost : 0" HorizontalAlignment="Left" Margin="331,381,0,0" VerticalAlignment="Top" Height="27" Width="120" AutomationProperties.IsRequiredForForm="True" FontSize="16" FontWeight="Bold"/>
-        <DataGrid x:Name="invoiceDataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="157,146,157,146"/>
-        <Label x:Name="itemslbl" Content="Items :" HorizontalAlignment="Left" Margin="225,308,0,0" VerticalAlignment="Top" Width="63" FontSize="14"/>
-        <ComboBox x:Name="cboItems" HorizontalAlignment="Left" Margin="293,312,0,0" VerticalAlignment="Top" Width="167" SelectionChanged="cboItems_SelectionChanged"/>
-        <Button x:Name="addBtn" Content="Add Item" HorizontalAlignment="Left" Margin="492,303,0,0" VerticalAlignment="Top" Width="70"/>
-        <Button x:Name="removeBtn" Content="Remove Item" HorizontalAlignment="Left" Margin="488,328,0,0" VerticalAlignment="Top" Width="78"/>
-        <Label x:Name="itemcostlbl" Content="Cost :" HorizontalAlignment="Left" Margin="234,353,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Button x:Name="editInvoicebtn" Content="Edit Invoice" HorizontalAlignment="Left" Margin="347,72,0,0" VerticalAlignment="Top" Width="88"/>
-        <Button x:Name="saveInvoicebtn" Content="Save Invoice" HorizontalAlignment="Left" Margin="555,72,0,0" VerticalAlignment="Top" Width="88"/>
-        <Button x:Name="createInvoicebtn" Content="Create Invoice" HorizontalAlignment="Left" Margin="157,72,0,0" VerticalAlignment="Top" Width="88"/>
-        <Label x:Name="itemCost" Content="" HorizontalAlignment="Left" Margin="338,353,0,0" VerticalAlignment="Top" Width="76" FontSize="14"/>
+       FontSize="20" FontWeight="Bold" Margin="0,24,0,0" Height="37" Width="294"/>
+        <Label x:Name="invoiceDatelbl" Content="Invoice Date :" HorizontalAlignment="Left" Margin="157,190,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="92" RenderTransformOrigin="0.511,0.588"/>
+        <Label x:Name="invoiceNumlbl" Content="Invoice Number :" HorizontalAlignment="Left" Margin="374,189,0,0" VerticalAlignment="Top" FontSize="14" Height="30" Width="116"/>
+        <Label x:Name="totalCostlbl" Content="Total Cost : 0" HorizontalAlignment="Left" Margin="360,96,0,0" VerticalAlignment="Top" Height="32" Width="144" AutomationProperties.IsRequiredForForm="True" FontSize="16" FontWeight="Bold" Grid.Row="2"/>
+        <DataGrid x:Name="invoiceDataGrid"  Margin="157,10,157,14" Grid.Row="1"/>
+        <Label x:Name="itemslbl" Content="Items :" HorizontalAlignment="Left" Margin="264,31,0,0" VerticalAlignment="Top" Width="63" FontSize="14" Grid.Row="2" Height="29"/>
+        <ComboBox x:Name="cboItems" HorizontalAlignment="Left" Margin="341,35,0,0" VerticalAlignment="Top" Width="166" SelectionChanged="cboItems_SelectionChanged" Grid.Row="2" Height="22" IsEnabled="False"/>
+        <Button x:Name="addBtn" Content="Add Item" HorizontalAlignment="Left" Margin="551,31,0,0" VerticalAlignment="Top" Width="70" Grid.Row="2" Height="20" Click="addBtn_Click" IsEnabled="False"/>
+        <Button x:Name="removeBtn" Content="Remove Item" HorizontalAlignment="Left" Margin="547,0,0,0" VerticalAlignment="Center" Width="78" Grid.Row="2" Height="20" Click="removeBtn_Click" IsEnabled="False"/>
+        <Label x:Name="itemcostlbl" Content="Cost :" HorizontalAlignment="Left" Margin="266,0,0,0" VerticalAlignment="Center" FontSize="14" Grid.Row="2" Height="29" Width="44"/>
+        <Button x:Name="editInvoicebtn" Content="Edit Invoice" HorizontalAlignment="Left" Margin="86,114,0,0" VerticalAlignment="Top" Width="94" Height="30" IsEnabled="False" Click="editInvoicebtn_Click"/>
+        <Button x:Name="saveInvoicebtn" Content="Save Invoice" HorizontalAlignment="Left" Margin="377,116,0,0" VerticalAlignment="Top" Width="110" Height="32" IsEnabled="False" Click="saveInvoicebtn_Click"/>
+        <Button x:Name="createInvoicebtn" Content="Create Invoice" HorizontalAlignment="Left" Margin="694,114,0,0" VerticalAlignment="Top" Width="94" Height="33" Click="createInvoicebtn_Click" RenderTransformOrigin="0.404,0.516"/>
+        <Label x:Name="itemCost" Content="" HorizontalAlignment="Left" Margin="362,0,0,0" VerticalAlignment="Center" Width="120" FontSize="14" Grid.Row="2" Height="29"/>
+        <Label x:Name="invoiceDate" Content="" HorizontalAlignment="Left" Margin="264,192,0,0" VerticalAlignment="Top" Width="78" RenderTransformOrigin="0.339,0.541" Height="26"/>
+        <Label x:Name="invoiceNum" Content="" HorizontalAlignment="Left" Margin="503,191,0,0" VerticalAlignment="Top" Width="94" Height="26"/>
+        <TextBox x:Name="createInvoiceDatetxt" HorizontalAlignment="Left" Margin="694,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
+        <Label x:Name="EnterDate" Content="Enter Date :" HorizontalAlignment="Left" Margin="616,192,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Button x:Name="newdatebtn" Content="Submit" HorizontalAlignment="Left" Margin="819,192,0,0" VerticalAlignment="Top" Width="61" Click="newdatebtn_Click" Visibility="Hidden"/>
 
     </Grid>
 </Window>

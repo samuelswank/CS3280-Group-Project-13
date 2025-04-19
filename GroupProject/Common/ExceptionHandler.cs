@@ -9,7 +9,7 @@ namespace Assignment6
     /// <summary>
     /// Class which handles exceptions for top-level methods
     /// </summary>
-    internal class ExceptionHandler
+    public class ExceptionHandler
     {
         /// <summary>
         /// The filePath of the .txt file where the error log is stored
