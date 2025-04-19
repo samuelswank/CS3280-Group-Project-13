@@ -71,7 +71,7 @@ namespace GroupProject.Items
         {
             try
             {
-                string sSQL = "DELETE FROM ItemDesc WHERE ItemCode = " + sItemCode + ';';
+                string sSQL = "DELETE FROM ItemDesc WHERE ItemCode = '" + sItemCode + "';";
                 return sSQL;
             }
             catch (Exception ex)
