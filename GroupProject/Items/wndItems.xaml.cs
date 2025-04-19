@@ -30,6 +30,8 @@ namespace GroupProject.Items
         clsItemsLogic itemsLogic;
         List<clsItem> items;
 
+        List<int> lineItemInvoiceNums;
+
         ExceptionHandler handler = new ExceptionHandler("Error.txt");
 
         const string sCurrencyRegex = @"^[\p{Sc}]?\s?\d{1,3}(,\d{3})*(\.\d{2})?$";
@@ -61,6 +63,7 @@ namespace GroupProject.Items
             try
             {
                 dgItems.SelectedIndex = -1;
+                lblErrorMsg.Content = string.Empty;
                 ClearTextBoxes();
             }
             catch (Exception ex)
@@ -148,6 +151,8 @@ namespace GroupProject.Items
 
         private void BtnEditItem_Click(object sender, RoutedEventArgs e)
         {
+            lblErrorMsg.Content = string.Empty;
+
             string sItemCode = string.Empty;
             string sItemDesc = txtBoxItemDesc.Text;
             string sCost = string.Empty;
@@ -155,19 +160,24 @@ namespace GroupProject.Items
             try
             {
                 if (itemsLogic.ItemInItemDesc(txtBoxItemCode.Text)) sItemCode += txtBoxItemCode.Text;
+                else lblErrorMsg.Content += "Item Code " + txtBoxItemCode.Text + " not in database.\n";
+
+                if (sItemDesc.Length == 0) lblErrorMsg.Content += "Item Description is empty.\n";
+
                 if (Regex.IsMatch(txtBoxCost.Text, sCurrencyRegex)) sCost +=  txtBoxCost.Text;
+                else lblErrorMsg.Content += "Cost " + txtBoxCost.Text + " not a valid currency value.";
 
 
                 if (sItemCode != string.Empty && sItemDesc.Length > 0 && sCost != string.Empty)
-                {            
+                {
+                    lblErrorMsg.Content = string.Empty;
                     ClearTextBoxes();
                     itemsLogic.UpdateItemDesc(sItemCode, sItemDesc, sCost);
 
                     dgItems.ItemsSource = itemsLogic.GetItems();
 
                     FocusDataGridRow(sItemCode);
-                }
-                // TODO: Add message so that user know which TextBox Field to fix
+                }   
             }
             catch (Exception ex)
             {
@@ -178,6 +188,8 @@ namespace GroupProject.Items
 
         private void BtnAddItem_Click(object sender, RoutedEventArgs e)
         {
+            lblErrorMsg.Content = string.Empty;
+
             string sItemCode = string.Empty;
             string sItemDesc = txtBoxItemDesc.Text;
             string sCost = string.Empty;
@@ -185,13 +197,16 @@ namespace GroupProject.Items
             try
             {
                 if (!itemsLogic.ItemInItemDesc(txtBoxItemCode.Text)) sItemCode += txtBoxItemCode.Text;
-                if (Regex.IsMatch(txtBoxCost.Text, sCurrencyRegex)) sCost += txtBoxCost.Text;
+                else lblErrorMsg.Content += "Item Code " + txtBoxItemCode.Text + " already in database.\n";
 
-                handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, " -> { " + sItemCode + ", " + sItemDesc + ", " + sCost + " }");
+                if (sItemDesc.Length == 0) lblErrorMsg.Content += "Item Description is empty.\n";
+
+                if (Regex.IsMatch(txtBoxCost.Text, sCurrencyRegex)) sCost += txtBoxCost.Text;
+                else lblErrorMsg.Content += "Cost " + txtBoxCost.Text + " not a valid currency value.";
 
                 if (sItemCode != string.Empty && sItemDesc.Length > 0 && sCost != string.Empty)
                 {
+                    lblErrorMsg.Content = string.Empty;
                     ClearTextBoxes();
                     itemsLogic.InsertItem(sItemCode, sItemDesc, sCost);
 
@@ -210,6 +225,8 @@ namespace GroupProject.Items
 
         private void BtnDeleteItem_Click(object sender, RoutedEventArgs e)
         {
+            lblErrorMsg.Content = string.Empty;
+
             try
             {
                 string sItemCode = string.Empty;
@@ -220,12 +237,29 @@ namespace GroupProject.Items
                     sItemCode = currItem.ItemCode;
                     if (!itemsLogic.ItemInLineItems(sItemCode))
                     {
+
                         itemsLogic.DeleteItem(sItemCode);
                         dgItems.ItemsSource = itemsLogic.GetItems();
                     }
-                    // TODO: Add message so that user know which Invoices sItemCode belongs to
+                    else
+                    {
+                        lineItemInvoiceNums = itemsLogic.GetLineItemInvoiceNums(sItemCode);
+
+                        string lineItemInvoiceNumsMsg = "Cannot Delete Item with Item Code " + sItemCode +
+                            " because it belongs to the Invoice Numbers:\n";
+
+                        for (int i = 0; i < lineItemInvoiceNums.Count; ++i)
+                        {
+                            lineItemInvoiceNumsMsg += '\t' + lineItemInvoiceNums[i].ToString() + '\n';
+                        }
+
+                        const string sCaption = "Cannot Delete Item";
+
+                        MessageBox.Show(lineItemInvoiceNumsMsg, sCaption, MessageBoxButton.OK,
+                            MessageBoxImage.Stop);
+                    }
                 }
-                // TODO: Add message so that user know that an item has not been selected
+                else lblErrorMsg.Content = "No DataGrid Item selected.";
             }
             catch (Exception ex)
             {
