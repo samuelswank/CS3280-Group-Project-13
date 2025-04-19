@@ -44,13 +44,16 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Items" HorizontalAlignment="Center" FontSize="16">
         </Label>
-        <DataGrid Grid.Column="0" Grid.Row="1" Name="dgItems" IsReadOnly="True" Margin="15" AutoGeneratingColumn="DgItems_AutoGeneratingColumn" CurrentCellChanged="DgItems_CurrentCellChanged"/>
+        <DataGrid Grid.Column="0" Grid.Row="1" Name="dgItems" IsReadOnly="True" Margin="15" AutoGeneratingColumn="DgItems_AutoGeneratingColumn" CurrentCellChanged="DgItems_CurrentCellChanged" />
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="80*" />
+                <RowDefinition Height="20*" />
+                <RowDefinition Height="60*" />
                 <RowDefinition Height="20*" />
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label x:Name="lblErrorMsg" Margin="25,0" FontSize="12" Foreground="Red">
+            </Label>
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <WrapPanel Style="{StaticResource styleWrapPanel}">
                     <Label Style="{StaticResource styleLabel}" Content="Item Code: ">
                     </Label>
@@ -73,9 +76,9 @@
                     <Button x:Name="btnEditItem" Style="{StaticResource styleButton}" Content="Edit Item" Click="BtnEditItem_Click" />
                     <Button x:Name="btnAddItem" Style="{StaticResource styleButton}" Content="Add Item" Click="BtnAddItem_Click" />
                 </WrapPanel>
-                <Button x:Name="btnDeleteItem" Content="Delete" FontSize="16" Width="100" />
+                <Button x:Name="btnDeleteItem" Content="Delete" FontSize="16" Width="100" Click="BtnDeleteItem_Click" />
             </StackPanel>
-            <Button Grid.Row="2" x:Name="btnMainWindow" Content="Return to Main Window" FontSize="15" Margin="75,25" Click="BtnMainWindow_Click" />
+            <Button Grid.Row="2" x:Name="btnMainWindow" Content="Main Window" FontSize="15" Margin="100,25" Click="BtnMainWindow_Click" />
         </Grid>
     </Grid>
 </Window>
