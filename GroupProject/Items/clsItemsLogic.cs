@@ -53,11 +53,11 @@ namespace GroupProject.Items
             return ItemsList;
         }
 
-        public List<string> GetLineItemInvoiceNums(string sItemCode)
+        public List<int> GetLineItemInvoiceNums(string sItemCode)
         {
             string sSQL = clsItemsSQL.GetLineItemInvoiceNums(sItemCode);
 
-            List<string> ItemInvoiceNumsList = new List<string>();
+            List<int> lineItemInvoiceNums = new List<int>();
 
             DataSet ds;
 
@@ -74,10 +74,10 @@ namespace GroupProject.Items
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; ++i)
             {
-                ItemInvoiceNumsList.Add(ds.Tables[0].Rows[i][0].ToString());
+                lineItemInvoiceNums.Add((int) ds.Tables[0].Rows[i][0]);
             }
 
-            return ItemInvoiceNumsList;
+            return lineItemInvoiceNums;
         }
 
         public int UpdateItemDesc(string sItemCode, string sItemDesc, string sCost)

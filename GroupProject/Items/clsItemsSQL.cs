@@ -28,7 +28,8 @@ namespace GroupProject.Items
         {
             try
             {
-                string sSQL = "SELECT DISTINCT(InvoiceNum) FROM LineItems WHERE ItemCode = " + sItemCode + ';';
+                string sSQL = "SELECT DISTINCT(InvoiceNum) FROM LineItems WHERE ItemCode = '" + sItemCode +
+                    "';";
                 return sSQL;
             }
             catch (Exception ex)
@@ -98,6 +99,19 @@ namespace GroupProject.Items
             try
             {
                 string sSQL = "SELECT COUNT(*) FROM LineItems WHERE ItemCode = '" + sItemCode + "';";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
+
+        public static string GetInvoicesForItem(string sItemCode)
+        {
+            try
+            {
+                string sSQL = "SELECT InvoiceNum FROM Invoices WHERE ItemCode = '" + sItemCode + "';";
                 return sSQL;
             }
             catch (Exception ex)
