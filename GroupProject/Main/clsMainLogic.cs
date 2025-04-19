@@ -127,9 +127,5 @@ namespace GroupProject.Main
         {
             return db.InsertInvoice(invoiceDate, totalCost);
         }
-
-        
-
-
     }
 }
