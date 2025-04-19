@@ -27,15 +27,30 @@ namespace GroupProject.Items
     /// </summary>
     public partial class wndItems : Window
     {
+        /// <summary>
+        /// Handles business logic for Window wndItems
+        /// </summary>
         clsItemsLogic itemsLogic;
+        /// <summary>
+        /// Functions as ItemsSource for DataGrid
+        /// </summary>
         List<clsItem> items;
-
+        /// <summary>
+        /// Stores LineItem InvoiceNums, ensures that no Item is deleted for which an Invoice currently exists
+        /// </summary>
         List<int> lineItemInvoiceNums;
-
+        /// <summary>
+        /// ExceptionHandler instance, outputs errors to an external test file to aid in debugging.
+        /// </summary>
         ExceptionHandler handler = new ExceptionHandler("Error.txt");
-
+        /// <summary>
+        /// Regular Expression string for validationg currency values entered in txtBoxCost
+        /// </summary>
         const string sCurrencyRegex = @"^[\p{Sc}]?\s?\d{1,3}(,\d{3})*(\.\d{2})?$";
 
+        /// <summary>
+        /// Constructor for Window wndItems, Initializes components
+        /// </summary>
         public wndItems()
         {
             InitializeComponent();
@@ -58,6 +73,12 @@ namespace GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Event Handler for when empty space on the form is DoubleClicked, deselects DataGrid Item, clears
+        /// error messages and TextBoxers
+        /// </summary>
+        /// <param name="sender">Window wndItems</param>
+        /// <param name="e">MouseDoubleClick</param>
         private void WndItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             try
@@ -73,6 +94,11 @@ namespace GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Event Handler which sets Column Format for DataGrid dgItems
+        /// </summary>
+        /// <param name="sender">DataGrid dgItems</param>
+        /// <param name="e"></param>
         private void DgItems_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             try
@@ -120,6 +146,12 @@ namespace GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Event Handler which defines behavior when the CurrentCell is changed in DataGrid dgItems, populates
+        /// TextBoxes with the appropriate data
+        /// </summary>
+        /// <param name="sender">DataGrid dgItems</param>
+        /// <param name="e"></param>
         private void DgItems_CurrentCellChanged(object sender, EventArgs e)
         {
             try
@@ -149,6 +181,11 @@ namespace GroupProject.Items
 
         }
 
+        /// <summary>
+        /// Defines behavior when Button BtnEditItem is Clicked, edits selected Item or diplays error message
+        /// </summary>
+        /// <param name="sender">Button BtnEditItem</param>
+        /// <param name="e">On Click</param>
         private void BtnEditItem_Click(object sender, RoutedEventArgs e)
         {
             lblErrorMsg.Content = string.Empty;
@@ -186,6 +223,12 @@ namespace GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Event Handler which defines behavior when Button BtnAddItem is Clicked, adds Item to Database if
+        /// it does not already and if new data are valid
+        /// </summary>
+        /// <param name="sender">Button BtnAddItem</param>
+        /// <param name="e">On Click</param>
         private void BtnAddItem_Click(object sender, RoutedEventArgs e)
         {
             lblErrorMsg.Content = string.Empty;
@@ -223,6 +266,12 @@ namespace GroupProject.Items
 
         }
 
+        /// <summary>
+        /// Event Handler which defines behavior when Button BtnDeleteItem is Clicked, deletes item, generates
+        /// error message, or Stop MessageBox
+        /// </summary>
+        /// <param name="sender">Button BtnDeleteItem</param>
+        /// <param name="e">On Click</param>
         private void BtnDeleteItem_Click(object sender, RoutedEventArgs e)
         {
             lblErrorMsg.Content = string.Empty;
@@ -257,6 +306,8 @@ namespace GroupProject.Items
 
                         MessageBox.Show(lineItemInvoiceNumsMsg, sCaption, MessageBoxButton.OK,
                             MessageBoxImage.Stop);
+
+                        lineItemInvoiceNums.Clear();
                     }
                 }
                 else lblErrorMsg.Content = "No DataGrid Item selected.";
@@ -268,6 +319,12 @@ namespace GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Event Handler which defines behavior when Button BtnMainWindow is Clicked, returns user to
+        /// MainWindow
+        /// </summary>
+        /// <param name="sender">Button BtnMainWindow</param>
+        /// <param name="e">On Click</param>
         private void BtnMainWindow_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -282,6 +339,11 @@ namespace GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Helper method which puts the Focus on the DataGridRow record which has just been Inserted or
+        /// Updated
+        /// </summary>
+        /// <param name="sItemCode">Item Code Column value for Item to be Selected</param>
         private void FocusDataGridRow(string sItemCode)
         {
             clsItem editedItem = dgItems.Items
@@ -296,6 +358,10 @@ namespace GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Helper Method for Clearing TextBoxes in form
+        /// </summary>
+        /// <exception cref="Exception">Generic Exception</exception>
         private void ClearTextBoxes()
         {
             try
