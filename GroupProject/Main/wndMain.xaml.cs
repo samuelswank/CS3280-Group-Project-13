@@ -1,4 +1,4 @@
-﻿using Assignment6;
+﻿//using Assignment6; commented out as it was causing errors for me -Ben
 using GroupProject.Common;
 using GroupProject.Items;
 using GroupProject.Search;
@@ -80,9 +80,17 @@ namespace GroupProject.Main
                 this.Hide();
                 wndSearch wndSearch = new wndSearch();
                 wndSearch.ShowDialog();
-                invoice = (clsInvoice)wndSearch.cboInvoiceNumber.SelectedItem;
+
+                // changed to selected invoice -Ben
+                invoice = (clsInvoice)wndSearch.selectedInvoice;
                 this.Show();
-                LoadInvoice(invoice.InvoiceID);
+
+                //Adding this to stop an error -Ben
+                if (invoice != null)
+                {
+                    LoadInvoice(invoice.InvoiceID);
+                }
+                
             }
             catch (Exception ex)
             {

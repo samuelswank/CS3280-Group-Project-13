@@ -23,84 +23,20 @@ namespace GroupProject.Search
         //      GetInvoiceNumberSQL
         //      GetInvoiceDateSQL
         //      GetInvoiceCostSQL
+       
+        static string sConnectionString = "Invoice.mdb";
+
+        clsDBAccess db = new clsDBAccess(sConnectionString);
+
+
 
         /// <summary>
-        /// Handles accessing the database
-        /// </summary>
-        public class clsDBAccess
-        {
-            /// <summary>
-            /// Connection string to the database.
-            /// </summary>
-            private string sConnectionString;
-
-            /// <summary>
-            /// Constructor that sets the connection string to the database
-            /// </summary>
-            public clsDBAccess()
-            {
-                sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetCurrentDirectory() + "\\Invoice.mdb";
-            }
-
-            /// <summary>
-            /// This method takes an SQL statment that is passed in and executes it.  The resulting values
-            /// are returned in a DataSet.  The number of rows returned from the query will be put into
-            /// the reference parameter iRetVal.
-            /// </summary>
-            /// <param name="sSQL">The SQL statement to be executed.</param>
-            /// <param name="iRetVal">Reference parameter that returns the number of selected rows.</param>
-            /// <returns>Returns a DataSet that contains the data from the SQL statement.</returns>
-            public DataSet ExecuteSQLStatement(string sSQL, ref int iRetVal)
-            {
-                try
-                {
-                    //Create a new DataSet
-                    DataSet ds = new DataSet();
-
-                    using (OleDbConnection conn = new OleDbConnection(sConnectionString))
-                    {
-
-                        using (OleDbDataAdapter adapter = new OleDbDataAdapter())
-                        {
-
-                            //Open the connection to the database
-                            conn.Open();
-
-                            //Add the information for the SelectCommand using the SQL statement and the connection object
-                            adapter.SelectCommand = new OleDbCommand(sSQL, conn);
-                            adapter.SelectCommand.CommandTimeout = 0;
-                            
-                            //Fill up the DataSet with data
-                            // I had to change this in order to access the specific tables
-                            adapter.Fill(ds, "Invoices");
-                        }
-                    }
-
-                    //Set the number of values returned
-                    iRetVal = ds.Tables[0].Rows.Count;
-
-                    //return the DataSet
-                    return ds;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets a list of all invoices, As of right now, mainly used for texting SQL statements
+        /// Gets a list of all invoices, As of right now, mainly used for testing SQL statements
         /// </summary>
         /// <returns></returns>
-        public List<clsInvoice> GetInvoice()
+        //public List<clsInvoice> GetInvoice(string sSQL)
+        public List<clsInvoice> GetInvoice(string sSQL)
         {
-            clsDBAccess db;
-            // create new database object
-            db = new clsDBAccess();
-            // sSQL string holds the sql statement from getInvoices
-            string sSQL = clsSearchSQL.GetInvoices();
-
             //create list of Invoices
             List<clsInvoice> InvoiceList = new List<clsInvoice>();
 
@@ -111,7 +47,14 @@ namespace GroupProject.Search
             int iRet = 0;
 
             //Get all the values from the Invoices table
-            ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+            try
+            {
+                ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
 
             //Loop through all the values returned
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -127,8 +70,75 @@ namespace GroupProject.Search
                 // add invoice object to Invoicelist
                 InvoiceList.Add(invoice);
             }
-
+            // return list of invoices
             return InvoiceList;
+        }
+
+        public string GetSQLStatement(string sNum, string sDate, string sCost)
+        {
+            decimal dCost = 0;
+            // convert string to decimal
+            if (sCost != "")
+            {
+                dCost = Convert.ToDecimal(sCost);
+            }
+
+            // sSQL string holds the sql statement
+            string sMySQL = "";
+
+            // if only num seleted
+            if ((sNum != "") && !(sDate != "") && !(dCost != 0))
+            {
+                sMySQL = clsSearchSQL.GetInvoiceNum(sNum);
+            }
+
+            // if only date selected
+            else if (!(sNum != "") && (sDate != "") && !(dCost != 0))
+            {
+                sMySQL = clsSearchSQL.GetInvoiceDate(sDate);
+            }
+
+            // if only cost selected
+            else if (!(sNum != "") && !(sDate != "") && (dCost != 0))
+            {
+                sMySQL = clsSearchSQL.GetInvoiceCost(dCost);
+            }
+
+            // num and date selected
+            else if ((sNum != "") && (sDate != "") && !(dCost != 0))
+            {
+                sMySQL = clsSearchSQL.GetInvoiceNumDate(sNum, sDate);
+            }
+
+            // num and cost selected
+            else if ((sNum != "") && !(sDate != "") && (dCost != 0))
+            {
+                sMySQL = clsSearchSQL.GetInvoiceNumCost(sNum, dCost);
+            }
+
+            // date and cost selected
+            else if (!(sNum != "") && (sDate != "") && (dCost != 0))
+            {
+                sMySQL = clsSearchSQL.GetInvoiceDateCost(sDate, dCost);
+            }
+
+            // all selected
+            else if ((sNum != "") && (sDate != "") && (dCost != 0))
+            {
+                sMySQL = clsSearchSQL.GetInvoiceNumDateCost(sNum, sDate, dCost);
+            }
+
+            // nothing selected
+            else
+            {
+                // sSQL string holds the sql statement from getInvoices
+                sMySQL = clsSearchSQL.GetInvoices();
+                return sMySQL;
+            }
+
+            //populate datagrid
+            return sMySQL;
+
         }
 
     }

@@ -69,6 +69,27 @@ namespace GroupProject.Search
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sInvoiceNum"></param>
+        /// <param name="dInvoiceCost"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static string GetInvoiceNumCost(string sInvoiceNum, decimal dInvoiceCost)
+        {
+            try
+            {
+                string sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + sInvoiceNum + " AND TotalCost = " + dInvoiceCost;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Select fron invoices when given: InvoiceNum, InvoiceDate, and InvoiceCost
         /// </summary>
         /// <param name="sInvoiceNum"></param>

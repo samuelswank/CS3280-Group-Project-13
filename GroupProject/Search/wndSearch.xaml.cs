@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SqlTypes;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,29 +25,30 @@ namespace GroupProject.Search
     /// </summary>
     public partial class wndSearch : Window
     {
+        clsSearchLogic searchLogic = new clsSearchLogic();
+        List<clsInvoice> invoiceList = new List<clsInvoice>();
+        public clsInvoice selectedInvoice = new clsInvoice();
+
+
+        string sSelectedNum = "";
+        string sSelectedDate = "";
+        string sSelectedCost = "";
         public wndSearch()
         {
             InitializeComponent();
 
-            clsSearchLogic searchLogic = new clsSearchLogic();
-            List<clsInvoice> invoice = new List<clsInvoice>();
-            invoice = searchLogic.GetInvoice();
+            invoiceList.Clear();
+            // call GetSQLStatement inside of the GetInvoice method, it returns a list of invoices
+            invoiceList = searchLogic.GetInvoice( searchLogic.GetSQLStatement(sSelectedNum, sSelectedDate, sSelectedCost) );
 
             // populate comboboxes
-            cboInvoiceNumber.ItemsSource = invoice;
-            cboInvoiceDate.ItemsSource = invoice;
-            cboInvoiceCost.ItemsSource = invoice;
+            cboInvoiceNumber.ItemsSource = invoiceList;
+            cboInvoiceDate.ItemsSource = invoiceList;
+            cboInvoiceCost.ItemsSource = invoiceList;
 
-            
+            //populate datagrid
+            dgdInvoice.ItemsSource = invoiceList;
         }
-
-        // Variables:
-        // sSelectedInvoiceID - hold the ID of the currently selected invoice
-        // SelectedInvoice - publicly accessable property
-        // bool bInvoiceNumIsSelected = false;
-        // bool bInvoiceDateIsSelected = false;
-        // bool bInvoiceCostIsSelected = false;
-
 
         /// <summary>
         /// triggers when the selection is changed for the Invoice Number combobox
@@ -52,7 +57,7 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void cboInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // bool bInvoiceNumIsSelected = true;
+            sSelectedNum = cboInvoiceNumber.Text;
         }
 
         /// <summary>
@@ -62,7 +67,7 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void cboInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // bool bInvoiceDateIsSelected = true;
+            sSelectedDate = cboInvoiceDate.Text;
         }
 
         /// <summary>
@@ -72,7 +77,7 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void cboInvoiceCost_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // bool bInvoiceCostIsSelected = true;
+            sSelectedCost = cboInvoiceCost.Text;
         }
 
         /// <summary>
@@ -82,6 +87,7 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void btnSelectInvoice_Click(object sender, RoutedEventArgs e)
         {
+            selectedInvoice = (clsInvoice)dgdInvoice.SelectedItem;
             //close window, return to main window
             this.Hide();
         }
@@ -94,6 +100,18 @@ namespace GroupProject.Search
         private void btnClearFilter_Click(object sender, RoutedEventArgs e)
         {
             // set the comboboxes to null
+            cboInvoiceNumber.SelectedItem = null;
+            cboInvoiceDate.SelectedItem = null;
+            cboInvoiceCost.SelectedItem = null;
+
+            //invoiceList.Clear();
+            string sSelectedNum = cboInvoiceNumber.Text;
+            string sSelectedDate = cboInvoiceDate.Text;
+            string sSelectedCost = cboInvoiceCost.Text;
+
+            string sMySQL = searchLogic.GetSQLStatement(sSelectedNum, sSelectedDate, sSelectedCost);
+
+            invoiceList = searchLogic.GetInvoice(sMySQL);
         }
 
         /// <summary>
@@ -105,6 +123,22 @@ namespace GroupProject.Search
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
             // check the bools, depending on what combination is true, call that sql statement
+            //invoiceList.Clear();
+            string sSelectedNum = cboInvoiceNumber.Text;
+            string sSelectedDate = cboInvoiceDate.Text;
+            string sSelectedCost = cboInvoiceCost.Text;
+
+            string sMySQL = searchLogic.GetSQLStatement(sSelectedNum, sSelectedDate, sSelectedCost);
+
+            invoiceList = searchLogic.GetInvoice(sMySQL);
+
+            //populate datagrid
+            dgdInvoice.ItemsSource = invoiceList;
+        }
+
+        private void dgdInvoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btnSelectInvoice.IsEnabled = true;
         }
     }
 }
