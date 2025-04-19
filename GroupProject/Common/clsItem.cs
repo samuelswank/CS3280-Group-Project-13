@@ -22,6 +22,12 @@ namespace GroupProject.Common
         /// <summary>
         /// Cost in USD dollars and cents of the item formatted as ${dollars}.{cents}
         /// </summary>
-        public string Cost { get; set; }
+        public decimal Cost { get; set; }
+        /// <summary>
+        /// Overriden ToString method for class clsItem, displays data as
+        /// { ItemCode, ItemDesc, Cost }
+        /// </summary>
+        /// <returns>string representation of clsItem instance</returns>
+        public override string ToString() { return "{ " + ItemCode + ", " + ItemDesc + ", " + Cost + " }"; }
     }
 } 

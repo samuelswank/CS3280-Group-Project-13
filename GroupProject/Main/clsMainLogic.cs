@@ -36,7 +36,7 @@ namespace GroupProject.Main
                 {
                     ItemCode = row["ItemCode"].ToString(),
                     ItemDesc = row["ItemDesc"].ToString(),
-                    Cost = row["Cost"].ToString()
+                    Cost = (decimal) row["Cost"]
                 };
 
                 AllItems.Add(item);
