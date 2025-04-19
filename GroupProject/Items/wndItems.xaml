@@ -71,7 +71,7 @@
                 </WrapPanel>
                 <WrapPanel Margin="0,25">
                     <Button x:Name="btnEditItem" Style="{StaticResource styleButton}" Content="Edit Item" Click="BtnEditItem_Click" />
-                    <Button x:Name="btnAddItem" Style="{StaticResource styleButton}" Content="Add Item" />
+                    <Button x:Name="btnAddItem" Style="{StaticResource styleButton}" Content="Add Item" Click="BtnAddItem_Click" />
                 </WrapPanel>
                 <Button x:Name="btnDeleteItem" Content="Delete" FontSize="16" Width="100" />
             </StackPanel>

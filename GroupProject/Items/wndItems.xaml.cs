@@ -33,7 +33,11 @@ namespace GroupProject.Items
 
         const string sCurrencyRegex = @"^[\p{Sc}]?\s?\d{1,3}(,\d{3})*(\.\d{2})?$";
 
-
+        enum MethodToValidate
+        {
+            BtnEditItem_Click,
+            BtnAddItem_Click
+        }
 
         public wndItems()
         {
@@ -157,33 +161,18 @@ namespace GroupProject.Items
 
             try
             {
-                int iNumRows = itemsLogic.GetItemCodeCount(txtBoxItemCode.Text);
-
-                if (iNumRows == 1) sItemCode += txtBoxItemCode.Text;
+                if (itemsLogic.ItemInItemDesc(txtBoxItemCode.Text)) sItemCode += txtBoxItemCode.Text;
                 if (Regex.IsMatch(txtBoxCost.Text, sCurrencyRegex)) sCost +=  txtBoxCost.Text;
 
 
                 if (sItemCode != string.Empty && sItemDesc.Length > 0 && sCost != string.Empty)
-                {
-                    if (!itemsLogic.LineItemHasInvoice(sItemCode))
-                    {
-                        ClearTextBoxes();
-                        itemsLogic.UpdateItemDesc(sItemCode, sItemDesc, sCost);
+                {            
+                    ClearTextBoxes();
+                    itemsLogic.UpdateItemDesc(sItemCode, sItemDesc, sCost);
 
-                        dgItems.ItemsSource = itemsLogic.GetItems();
+                    dgItems.ItemsSource = itemsLogic.GetItems();
 
-                        clsItem editedItem = dgItems.Items
-                            .Cast<clsItem>()
-                            .Where(item => item.ItemCode == sItemCode).First();
-
-                        if (editedItem != null)
-                        {
-                            dgItems.ScrollIntoView(editedItem);
-                            dgItems.SelectedItem = editedItem;
-                            dgItems.Focus();
-                        }                     
-                    }
-                    // TODO: Add message so that user knows why they could not edit an item with an invoice
+                    FocusDataGridRow(sItemCode);
                 }
                 // TODO: Add message so that user know which TextBox Field to fix
             }
@@ -192,6 +181,38 @@ namespace GroupProject.Items
                 handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                     MethodInfo.GetCurrentMethod().Name, " -> " + ex.Message);
             }
+        }
+
+        private void BtnAddItem_Click(object sender, RoutedEventArgs e)
+        {
+            string sItemCode = string.Empty;
+            string sItemDesc = txtBoxItemDesc.Text;
+            string sCost = string.Empty;
+
+            try
+            {
+                if (!itemsLogic.ItemInItemDesc(txtBoxItemCode.Text)) sItemCode += txtBoxItemCode.Text;
+                if (Regex.IsMatch(txtBoxCost.Text, sCurrencyRegex)) sCost += txtBoxCost.Text;
+
+                handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, " -> { " + sItemCode + ", " + sItemDesc + ", " + sCost + " }");
+
+                if (sItemCode != string.Empty && sItemDesc.Length > 0 && sCost != string.Empty)
+                {
+                    ClearTextBoxes();
+                    itemsLogic.InsertItem(sItemCode, sItemDesc, sCost);
+
+                    dgItems.ItemsSource = itemsLogic.GetItems();
+
+                    FocusDataGridRow(sItemCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                handler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, " -> " + ex.Message);
+            }
+
         }
 
         private void BtnMainWindow_Click(object sender, RoutedEventArgs e)
@@ -219,6 +240,20 @@ namespace GroupProject.Items
             catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
+
+        private void FocusDataGridRow(string sItemCode)
+        {
+            clsItem editedItem = dgItems.Items
+                .Cast<clsItem>()
+                .Where(item => item.ItemCode == sItemCode).First();
+
+            if (editedItem != null)
+            {
+                dgItems.ScrollIntoView(editedItem);
+                dgItems.SelectedItem = editedItem;
+                dgItems.Focus();
             }
         }
     }
