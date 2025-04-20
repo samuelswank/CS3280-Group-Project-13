@@ -115,6 +115,7 @@ namespace GroupProject.Main
                 wndItems wndItem = new wndItems();
                 wndItem.ShowDialog();
                 this.Show();
+                LoadItems();
             }
             catch (Exception ex)
             {
@@ -192,6 +193,8 @@ namespace GroupProject.Main
         {
             try
             {
+               
+
                 selectedItem = (clsItem)cboItems.SelectedItem;
                 int lineItemNumber = invoiceDataGrid.Items.Count + 1;
                 mainLogic.InsertLineItem(invoice.InvoiceID, lineItemNumber.ToString(), selectedItem.ItemCode);
@@ -213,6 +216,11 @@ namespace GroupProject.Main
         {
             try
             {
+                if(selectedItem == null)
+                {
+                    errorlbl.Content = ("Please select an item to remove.");
+                    return;
+                }
                 selectedItem = (clsItem)invoiceDataGrid.SelectedItem;
                 mainLogic.DeleteLineItem(invoice.InvoiceID, selectedItem.ItemCode);
                 LoadInvoice(invoice.InvoiceID);

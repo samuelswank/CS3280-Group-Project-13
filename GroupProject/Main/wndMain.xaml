@@ -43,6 +43,7 @@
         <TextBox x:Name="createInvoiceDatetxt" HorizontalAlignment="Left" Margin="694,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Visibility="Hidden"/>
         <Label x:Name="EnterDate" Content="Enter Date :" HorizontalAlignment="Left" Margin="616,192,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
         <Button x:Name="newdatebtn" Content="Submit" HorizontalAlignment="Left" Margin="819,192,0,0" VerticalAlignment="Top" Width="61" Click="newdatebtn_Click" Visibility="Hidden"/>
+        <Label x:Name="errorlbl" Content="" HorizontalAlignment="Left" Margin="546,102,0,0" Grid.Row="2" VerticalAlignment="Top" Width="284"/>
 
     </Grid>
 </Window>
