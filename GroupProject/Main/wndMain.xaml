@@ -28,7 +28,7 @@
         <Label x:Name="invoiceDatelbl" Content="Invoice Date :" HorizontalAlignment="Left" Margin="157,190,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="92" RenderTransformOrigin="0.511,0.588"/>
         <Label x:Name="invoiceNumlbl" Content="Invoice Number :" HorizontalAlignment="Left" Margin="374,189,0,0" VerticalAlignment="Top" FontSize="14" Height="30" Width="116"/>
         <Label x:Name="totalCostlbl" Content="Total Cost : 0" HorizontalAlignment="Left" Margin="360,96,0,0" VerticalAlignment="Top" Height="32" Width="144" AutomationProperties.IsRequiredForForm="True" FontSize="16" FontWeight="Bold" Grid.Row="2"/>
-        <DataGrid x:Name="invoiceDataGrid"  Margin="157,10,157,14" Grid.Row="1"/>
+        <DataGrid x:Name="invoiceDataGrid"  Margin="157,10,157,14" Grid.Row="1" SelectionChanged="invoiceDataGrid_SelectionChanged"/>
         <Label x:Name="itemslbl" Content="Items :" HorizontalAlignment="Left" Margin="264,31,0,0" VerticalAlignment="Top" Width="63" FontSize="14" Grid.Row="2" Height="29"/>
         <ComboBox x:Name="cboItems" HorizontalAlignment="Left" Margin="341,35,0,0" VerticalAlignment="Top" Width="166" SelectionChanged="cboItems_SelectionChanged" Grid.Row="2" Height="22" IsEnabled="False"/>
         <Button x:Name="addBtn" Content="Add Item" HorizontalAlignment="Left" Margin="551,31,0,0" VerticalAlignment="Top" Width="70" Grid.Row="2" Height="20" Click="addBtn_Click" IsEnabled="False"/>
