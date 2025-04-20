@@ -15,26 +15,22 @@ namespace GroupProject.Search
 {
     internal class clsSearchLogic
     {
-        // GetDistinctInvoiceNumber()
-        // GetDistinctInvoiceDate()
-        // GetDistinctInvoiceCost()
-
-        // GetInvoices(InvoiceNumber, InvoiceDate, InvoiceCost) - returns List<clsInvoices>
-        //      GetInvoiceNumberSQL
-        //      GetInvoiceDateSQL
-        //      GetInvoiceCostSQL
-       
+        /// <summary>
+        /// Connection string to the database
+        /// </summary>
         static string sConnectionString = "Invoice.mdb";
 
+        /// <summary>
+        /// clsDBAccess object to access the database
+        /// </summary>
         clsDBAccess db = new clsDBAccess(sConnectionString);
 
-
-
         /// <summary>
-        /// Gets a list of all invoices, As of right now, mainly used for testing SQL statements
+        /// GetInvoice method that takes a SQL statement and returns a list of clsInvoice objects
         /// </summary>
+        /// <param name="sSQL"></param>
         /// <returns></returns>
-        //public List<clsInvoice> GetInvoice(string sSQL)
+        /// <exception cref="Exception"></exception>
         public List<clsInvoice> GetInvoice(string sSQL)
         {
             //create list of Invoices
@@ -74,6 +70,13 @@ namespace GroupProject.Search
             return InvoiceList;
         }
 
+        /// <summary>
+        /// GetSQLStatement method that takes the invoice number, date, and cost and returns a SQL statement
+        /// </summary>
+        /// <param name="sNum"></param>
+        /// <param name="sDate"></param>
+        /// <param name="sCost"></param>
+        /// <returns></returns>
         public string GetSQLStatement(string sNum, string sDate, string sCost)
         {
             decimal dCost = 0;

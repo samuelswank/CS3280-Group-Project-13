@@ -86,10 +86,11 @@ namespace GroupProject.Main
                 this.Show();
 
                 //Adding this to stop an error -Ben
-                if (invoice != null)
+                if (invoice.InvoiceID != null)
                 {
                     LoadInvoice(invoice.InvoiceID);
                 }
+                
                 
             }
             catch (Exception ex)
@@ -175,6 +176,9 @@ namespace GroupProject.Main
         {
             try
             {
+                // moved this here as if it was pressed when no item selected the program would crash -Ben
+                addBtn.IsEnabled = true;
+
                 selectedItem = (clsItem)cboItems.SelectedItem;
                 itemCost.Content = selectedItem.Cost;
             }
@@ -277,8 +281,11 @@ namespace GroupProject.Main
         {
             try
             {
-                addBtn.IsEnabled = true;
-                removeBtn.IsEnabled = true;
+                // diabling until an item is selected in the dropdown menu, if pressed when no item is selected a crash occurs -Ben
+                //addBtn.IsEnabled = true;
+
+                // diabling until an item is selected, if pressed when no item is selected a crash occurs -Ben
+                //removeBtn.IsEnabled = true;
                 cboItems.IsEnabled = true;
             }
             catch (Exception ex)
@@ -398,6 +405,12 @@ namespace GroupProject.Main
         {
             string message = $"An error occured:\n{ex.Message}";
             MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void invoiceDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //  Added this to stop an error -Ben
+            removeBtn.IsEnabled = true;
         }
     }
 }

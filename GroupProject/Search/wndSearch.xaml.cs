@@ -25,19 +25,43 @@ namespace GroupProject.Search
     /// </summary>
     public partial class wndSearch : Window
     {
+        /// <summary>
+        /// clsSearchLogic object to call the GetInvoice method
+        /// </summary>
         clsSearchLogic searchLogic = new clsSearchLogic();
+        /// <summary>
+        /// List of clsInvoice objects to hold the invoices
+        /// </summary>
         List<clsInvoice> invoiceList = new List<clsInvoice>();
+        /// <summary>
+        /// clsInvoice object to hold the selected invoice
+        /// </summary>
         public clsInvoice selectedInvoice = new clsInvoice();
 
-
+        /// <summary>
+        /// string that hold the selected invoice id
+        /// </summary>
         string sSelectedNum = "";
+        /// <summary>
+        /// string that hold the selected invoice date
+        /// </summary>
         string sSelectedDate = "";
+        /// <summary>
+        /// string that hold the selected invoice cost
+        /// </summary>
         string sSelectedCost = "";
+
+        /// <summary>
+        /// Constructor for the wndSearch class
+        /// </summary>
         public wndSearch()
         {
+            // Initialize the window
             InitializeComponent();
 
+            // Set the datagrid to be empty
             invoiceList.Clear();
+
             // call GetSQLStatement inside of the GetInvoice method, it returns a list of invoices
             invoiceList = searchLogic.GetInvoice( searchLogic.GetSQLStatement(sSelectedNum, sSelectedDate, sSelectedCost) );
 
@@ -104,7 +128,6 @@ namespace GroupProject.Search
             cboInvoiceDate.SelectedItem = null;
             cboInvoiceCost.SelectedItem = null;
 
-            //invoiceList.Clear();
             string sSelectedNum = cboInvoiceNumber.Text;
             string sSelectedDate = cboInvoiceDate.Text;
             string sSelectedCost = cboInvoiceCost.Text;
@@ -122,8 +145,6 @@ namespace GroupProject.Search
         /// <param name="e"></param>
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
-            // check the bools, depending on what combination is true, call that sql statement
-            //invoiceList.Clear();
             string sSelectedNum = cboInvoiceNumber.Text;
             string sSelectedDate = cboInvoiceDate.Text;
             string sSelectedCost = cboInvoiceCost.Text;

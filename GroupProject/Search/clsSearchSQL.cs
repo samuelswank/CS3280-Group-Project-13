@@ -173,64 +173,68 @@ namespace GroupProject.Search
             }
         }
 
-        /// <summary>
-        /// return a list of all InvoiceNums
-        /// </summary>
-        /// <param name="sInvoiceDate"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public static string GetDistinctNum()
-        {
-            try
-            {
-                string sSQL = "SELECT DISTINCT(InvoiceNum) From Invoices order by InvoiceNum";
-                return sSQL;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
+        // The following methods are not being used currently
+        // but im leaving them in just in case. -Ben
+        #region unused methods
+        ///// <summary>
+        ///// return a list of all InvoiceNums
+        ///// </summary>
+        ///// <param name="sInvoiceDate"></param>
+        ///// <returns></returns>
+        ///// <exception cref="Exception"></exception>
+        //public static string GetDistinctNum()
+        //{
+        //    try
+        //    {
+        //        string sSQL = "SELECT DISTINCT(InvoiceNum) From Invoices order by InvoiceNum";
+        //        return sSQL;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+        //    }
+        //}
 
-        /// <summary>
-        /// return a list of all InvoiceDates
-        /// </summary>
-        /// <param name="sInvoiceDate"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public static string GetDistinctDate()
-        {
-            try
-            {
-                string sSQL = "SELECT DISTINCT(InvoiceDate) From Invoices order by InvoiceDate";
-                return sSQL;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
+        ///// <summary>
+        ///// return a list of all InvoiceDates
+        ///// </summary>
+        ///// <param name="sInvoiceDate"></param>
+        ///// <returns></returns>
+        ///// <exception cref="Exception"></exception>
+        //public static string GetDistinctDate()
+        //{
+        //    try
+        //    {
+        //        string sSQL = "SELECT DISTINCT(InvoiceDate) From Invoices order by InvoiceDate";
+        //        return sSQL;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+        //    }
+        //}
 
-        /// <summary>
-        /// return a list of all TotalCosts
-        /// </summary>
-        /// <param name="dInvoiceCost"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public static string GetDistinctCost()
-        {
-            try
-            {
-                string sSQL = "SELECT DISTINCT(TotalCost) From Invoices order by TotalCost";
-                return sSQL;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
+        ///// <summary>
+        ///// return a list of all TotalCosts
+        ///// </summary>
+        ///// <param name="dInvoiceCost"></param>
+        ///// <returns></returns>
+        ///// <exception cref="Exception"></exception>
+        //public static string GetDistinctCost()
+        //{
+        //    try
+        //    {
+        //        string sSQL = "SELECT DISTINCT(TotalCost) From Invoices order by TotalCost";
+        //        return sSQL;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+        //    }
+        //}
+        #endregion
     }
 }
